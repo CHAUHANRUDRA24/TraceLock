@@ -147,7 +147,7 @@
 <button class="text-zinc-400 hover:text-primary transition-colors hover:rotate-12">
 <span class="material-symbols-outlined">notifications</span>
 </button>
-<a class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/40 hover:border-primary transition-all active:scale-90" href="/dashboard">
+<a class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/40 hover:border-primary transition-all active:scale-90" href="login.html">
 <img alt="User status indicator" class="w-full h-full object-cover" data-alt="Close-up portrait of a tech professional in a dark studio with blue ambient lighting reflecting on their face" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2FynWofON2FkFf66Nef8LhyAmbLIKBTP-NafX0qm2ost-bmwnx2waQQqXn_VIlSSnsIN9FinTUPo4L0080zEvZr35qkSfcVRRW40DMhDxGtPLoZK7Qewt7MqmxWcT2yDWjZIxqesWuFLCRi4tVV49xW5qxPDjmWM1_0ngdd8_RR-e9MpzaGeW5JP56d4sDYo86kHVG3k0fJfhjYvqNM4GjxokwCsYYJH6hhIFCJT6EKQq_YxwNVveFgczWQakA0E5B-s6NITE3w0I"/>
 </a>
 </div>
@@ -174,7 +174,7 @@
                         TraceLock embeds invisible forensic identifiers into every document. Know exactly who leaked what, when, and from which device.
                     </p>
 <div class="flex flex-wrap gap-6 opacity-0 animate-fade-in-up" style="animation-delay: 0.6s; animation-fill-mode: forwards;">
-<a class="neon-gradient text-on-primary-fixed font-bold py-5 px-12 rounded-full text-lg shadow-xl shadow-primary-container/30 transition-all hover:scale-105 hover:shadow-primary-container/50 active:scale-95 text-center flex items-center justify-center" href="/dashboard">
+<a class="neon-gradient text-on-primary-fixed font-bold py-5 px-12 rounded-full text-lg shadow-xl shadow-primary-container/30 transition-all hover:scale-105 hover:shadow-primary-container/50 active:scale-95 text-center flex items-center justify-center" href="login.html">
                             Get Started
                         </a>
 <button class="bg-surface-container-low/50 backdrop-blur-md border border-outline-variant/40 text-on-surface font-bold py-5 px-12 rounded-full text-lg hover:bg-surface-container-high hover:border-outline transition-all active:scale-95">
@@ -311,7 +311,7 @@
                             Deploy TraceLock across your cloud infrastructure today.
                         </p>
 <div class="flex flex-col md:flex-row gap-8 justify-center items-center">
-<a class="neon-gradient text-on-primary-fixed font-bold py-6 px-16 rounded-full text-xl shadow-2xl shadow-primary-container/50 transition-all hover:scale-105 hover:-translate-y-1 active:scale-95 text-center min-w-[300px]" href="/dashboard">
+<a class="neon-gradient text-on-primary-fixed font-bold py-6 px-16 rounded-full text-xl shadow-2xl shadow-primary-container/50 transition-all hover:scale-105 hover:-translate-y-1 active:scale-95 text-center min-w-[300px]" href="login.html">
                                 Start Free Integration
                             </a>
 <a class="text-on-surface-variant hover:text-on-surface font-black uppercase tracking-[0.25em] transition-all text-sm group flex items-center gap-3" href="#">
@@ -421,5 +421,29 @@
                 nav.classList.remove('py-3', 'bg-zinc-950/95');
             }
         });
+    </script>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyBU-qmN4EP_SrueaYPRu_Z8q9VXnlqlbBI",
+          authDomain: "tracelock-2b9e3.firebaseapp.com",
+          projectId: "tracelock-2b9e3",
+          storageBucket: "tracelock-2b9e3.firebasestorage.app",
+          messagingSenderId: "893812064883",
+          appId: "1:893812064883:web:2c6b1a72ac718a4947e006",
+          measurementId: "G-SCBM6WB7W3"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
     </script>
 </body></html>

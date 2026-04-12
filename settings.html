@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="stylesheet" href="transitions.css"/>
+<title>TraceLock | Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#ffba49",
+                    "secondary-container": "#9d05ff",
+                    "on-tertiary-fixed": "#291800",
+                    "surface-container": "#201f1f",
+                    "background": "#131313",
+                    "primary": "#a4e6ff",
+                    "error-container": "#93000a",
+                    "surface-dim": "#131313",
+                    "surface-container-low": "#1c1b1b",
+                    "on-surface": "#e5e2e1",
+                    "tertiary-container": "#feb127",
+                    "secondary-fixed": "#f1daff",
+                    "outline-variant": "#3c494e",
+                    "on-primary-fixed": "#001f28",
+                    "on-background": "#e5e2e1",
+                    "tertiary-fixed": "#ffddb1",
+                    "on-secondary-fixed-variant": "#6b00b0",
+                    "secondary-fixed-dim": "#dfb7ff",
+                    "on-secondary-fixed": "#2d004f",
+                    "error": "#ffb4ab",
+                    "on-tertiary-container": "#6b4700",
+                    "on-tertiary-fixed-variant": "#624000",
+                    "surface-tint": "#4cd6ff",
+                    "surface-container-highest": "#353534",
+                    "inverse-primary": "#00677f",
+                    "primary-container": "#00d1ff",
+                    "inverse-on-surface": "#313030",
+                    "primary-fixed": "#b7eaff",
+                    "on-secondary": "#4b007e",
+                    "surface-container-high": "#2a2a2a",
+                    "secondary": "#dfb7ff",
+                    "primary-fixed-dim": "#4cd6ff",
+                    "on-primary-container": "#00566a",
+                    "inverse-surface": "#e5e2e1",
+                    "on-tertiary": "#442b00",
+                    "on-primary": "#003543",
+                    "on-secondary-container": "#f7e6ff",
+                    "surface-bright": "#393939",
+                    "on-primary-fixed-variant": "#004e60",
+                    "tertiary": "#ffd59c",
+                    "on-error": "#690005",
+                    "surface-variant": "#353534",
+                    "outline": "#859399",
+                    "on-surface-variant": "#bbc9cf",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface": "#131313"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-border {
+            border: 1px solid rgba(133, 147, 153, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 64px rgba(0, 209, 255, 0.04);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 209, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-fixed antialiased">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col w-64 border-r border-cyan-500/5 bg-zinc-950/60 backdrop-blur-3xl z-50">
+<div class="p-8">
+<h1 class="text-2xl font-bold tracking-tighter text-cyan-400 font-headline">TraceLock</h1>
+<p class="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mt-1 font-headline opacity-60">System Secure</p>
+</div>
+<nav class="flex-1 px-4 space-y-1.5 font-headline text-sm tracking-tight overflow-y-auto custom-scrollbar">
+<a class="group flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-zinc-200 transition-all duration-300" href="dashboard.html">
+<span class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">dashboard</span>
+                Dashboard
+            </a>
+<a class="group flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-zinc-200 transition-all duration-300" href="documents.html">
+<span class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">description</span>
+                Documents
+            </a>
+<a class="group flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-zinc-200 transition-all duration-300" href="analytics.html">
+<span class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">analytics</span>
+                Analytics
+            </a>
+<a class="group flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-zinc-200 transition-all duration-300" href="leak_detection.html">
+<span class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">security</span>
+                Leak Detection
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-cyan-400 bg-cyan-400/5 border border-cyan-400/10 font-bold transition-all duration-300" href="settings.html">
+<span class="material-symbols-outlined text-lg">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="p-4 border-t border-cyan-500/5">
+<div class="flex items-center gap-3 px-4 py-4 bg-white/5 rounded-2xl transition-colors hover:bg-white/10 cursor-pointer group">
+<img class="w-9 h-9 rounded-full border border-primary-container/20 object-cover" data-alt="professional male portrait with high-key lighting and clean gray background for tech administrator profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIjzDLhFnvrCHib3sxsB5kP8AF6YdHVDPxGKzE194MnLaFECbah_xzvNcgWd8eMJ3D0W6U8J4rk1n--ZJ_snfNA9FcY2euNISn624ieWYRU_Ho0tHXNv22JrhQbUGeyyhuLt0azj_KxgjryePzP-GteSqmuHDehLodLRyt24MruCzBQjDCysUlzhc_2MyXIvE2YDJBuI5OfZaihpnV4UQ5Dpj5o0XpcQkSn4AD9vkSOplBsRcPX1566IG7dgGSVKhCfrhJNFuu1iHV"/>
+<div class="overflow-hidden flex-1">
+<p class="text-xs font-bold text-on-surface truncate">Admin Root</p>
+<p class="text-[10px] text-zinc-500 truncate opacity-80">System Active</p>
+</div>
+<span class="material-symbols-outlined text-zinc-600 text-sm group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 left-64 flex justify-between items-center px-8 z-40 bg-zinc-950/40 backdrop-blur-xl h-16 border-b border-white/5">
+<div class="flex items-center gap-12">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-zinc-500 text-sm">search</span>
+<input class="bg-white/5 border-none rounded-full pl-10 pr-4 py-2 text-xs text-on-surface-variant w-64 focus:ring-1 focus:ring-cyan-500/30 placeholder:text-zinc-600 transition-all" placeholder="Global Trace Search..." type="text"/>
+</div>
+<nav class="flex gap-8 font-headline text-[10px] font-bold uppercase tracking-widest">
+<a class="text-zinc-500 hover:text-cyan-400 transition-colors" href="#">Network</a>
+<a class="text-zinc-500 hover:text-cyan-400 transition-colors" href="#">Nodes</a>
+<a class="text-zinc-500 hover:text-cyan-400 transition-colors" href="#">Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<button class="material-symbols-outlined text-zinc-400 hover:text-cyan-400 transition-colors">notifications</button>
+<span class="absolute top-0 right-0 w-2 h-2 bg-secondary-container rounded-full border-2 border-zinc-950"></span>
+</div>
+<button class="material-symbols-outlined text-zinc-400 hover:text-cyan-400 transition-colors">account_circle</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-12 pb-12 min-h-screen">
+<header class="mb-12">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-[10px] uppercase tracking-[0.2em] text-cyan-500 font-bold">Command Center</span>
+<div class="h-[1px] w-8 bg-cyan-500/20"></div>
+</div>
+<h2 class="font-headline text-5xl font-extrabold tracking-tighter text-on-surface mb-3">Account <span class="bg-gradient-to-r from-primary-container to-secondary-container bg-clip-text text-transparent">Nexus</span></h2>
+<p class="text-zinc-400 max-w-xl leading-relaxed text-sm">Configure your secure infrastructure nodes, cryptographic identities, and system-wide preferences from the central command terminal.</p>
+</header>
+<!-- Settings Grid -->
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Bento-Style Settings Panel -->
+<div class="col-span-12 lg:col-span-8 space-y-8">
+<!-- Profile Section -->
+<section class="bg-surface-container-low/50 rounded-2xl p-8 glass-border relative overflow-hidden group transition-all duration-300 hover:bg-surface-container-low">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container/5 blur-[100px] -mr-32 -mt-32 transition-all duration-500 group-hover:bg-primary-container/10"></div>
+<div class="flex justify-between items-start mb-10 relative z-10">
+<div>
+<span class="text-[10px] uppercase tracking-[0.2em] text-primary-container font-headline font-bold mb-1 block">Identity Management</span>
+<h3 class="font-headline text-2xl font-bold">Profile Identity</h3>
+</div>
+<button class="px-6 py-2.5 bg-white/5 rounded-full text-[11px] uppercase tracking-wider font-bold border border-white/10 hover:border-primary-container/40 hover:bg-white/10 transition-all active:scale-95">Edit Registry</button>
+</div>
+<div class="flex items-center gap-10 relative z-10">
+<div class="relative group/avatar">
+<div class="w-28 h-28 rounded-2xl overflow-hidden border-2 border-primary-container/20 group-hover/avatar:border-primary-container/50 transition-colors">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover/avatar:scale-110" data-alt="close-up of technology professional with warm lighting and deep depth of field in a modern workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw33tP6_MQH2AGExi2x-wsrrCo2FdWfUgnWKm0Rq7KwtwdXgQFWkJQjpvvYPn4jQzBFriOHsuU7bMrQulV2y8am0cWkPMfvhhIjA-HbLE8KfZgc1PsJ6z3MyxlJXADo04rtmZuetJBRRUjhRFZAswCoGL2bn17C2GehdPk_r_E5nBZzNfufd_2WIKB7KhPMyzWf63JA9gGrppYXHIa63w1TdVU-Fxysw8GMK-eBkRFe_RX9uS1iZuRZo3F8EVd_YWvSI-mzQFPGdS3"/>
+</div>
+<button class="absolute -bottom-2 -right-2 bg-primary-container text-on-primary-fixed p-2 rounded-xl flex items-center justify-center shadow-lg shadow-primary-container/20 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<div class="flex-1 grid grid-cols-2 gap-8">
+<div class="space-y-1">
+<label class="text-[10px] uppercase tracking-[0.15em] text-zinc-500 font-bold block">Public Codename</label>
+<p class="text-on-surface font-semibold tracking-tight text-lg">Administrator_Root_01</p>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] uppercase tracking-[0.15em] text-zinc-500 font-bold block">Secure Mail</label>
+<p class="text-on-surface font-semibold tracking-tight text-lg">root@tracelock.secure</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Security / 2FA Grid Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Security Card -->
+<section class="bg-surface-container-low/50 rounded-2xl p-8 glass-border hover:bg-surface-container-low transition-all duration-300">
+<div class="flex items-center gap-4 mb-6">
+<div class="bg-secondary-container/10 p-2.5 rounded-xl">
+<span class="material-symbols-outlined text-secondary-container">shield</span>
+</div>
+<h3 class="font-headline text-xl font-bold">Multi-Factor Auth</h3>
+</div>
+<p class="text-xs text-zinc-400 leading-relaxed mb-8">Enhanced verification layer using hardware keys or biometric verification modules for ultimate security.</p>
+<div class="flex items-center justify-between p-4 bg-zinc-950/40 rounded-2xl border border-white/5 group cursor-pointer hover:border-secondary-container/30 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary-container">Status: Active</span>
+</div>
+<button class="relative inline-flex items-center cursor-pointer group/toggle">
+<div class="w-11 h-6 bg-primary-container rounded-full transition-colors"></div>
+<div class="absolute left-1 top-1 bg-on-primary-fixed w-4 h-4 rounded-full transition-transform translate-x-5"></div>
+</button>
+</div>
+</section>
+<!-- System Preferences -->
+<section class="bg-surface-container-low/50 rounded-2xl p-8 glass-border hover:bg-surface-container-low transition-all duration-300">
+<div class="flex items-center gap-4 mb-6">
+<div class="bg-tertiary-container/10 p-2.5 rounded-xl">
+<span class="material-symbols-outlined text-tertiary-container">tune</span>
+</div>
+<h3 class="font-headline text-xl font-bold">Preferences</h3>
+</div>
+<ul class="space-y-4">
+<li class="flex items-center justify-between group cursor-pointer p-2 rounded-lg hover:bg-white/5 transition-all">
+<span class="text-sm text-zinc-400 group-hover:text-on-surface transition-colors">Neural Interface Theme</span>
+<span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest bg-white/5 px-2 py-1 rounded">Obsidian Neon</span>
+</li>
+<li class="flex items-center justify-between group cursor-pointer p-2 rounded-lg hover:bg-white/5 transition-all">
+<span class="text-sm text-zinc-400 group-hover:text-on-surface transition-colors">Log Retention Policy</span>
+<span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest bg-white/5 px-2 py-1 rounded">30 Cycles</span>
+</li>
+<li class="flex items-center justify-between group cursor-pointer p-2 rounded-lg hover:bg-white/5 transition-all">
+<span class="text-sm text-zinc-400 group-hover:text-on-surface transition-colors">Autonomous Alerts</span>
+<span class="material-symbols-outlined text-primary-container text-xl transition-transform group-hover:scale-110">check_circle</span>
+</li>
+</ul>
+</section>
+</div>
+<!-- API Keys - Wide Bento Item -->
+<section class="bg-surface-container-low/50 rounded-2xl p-8 glass-border border-l-4 border-l-secondary-container hover:bg-surface-container-low transition-all duration-300">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-headline text-xl font-bold flex items-center gap-3">
+<span class="material-symbols-outlined text-zinc-500">api</span>
+                                Cryptographic API Keys
+                            </h3>
+<p class="text-xs text-zinc-400 mt-2">External integration tokens for secure system-to-system telemetry.</p>
+</div>
+<button class="px-6 py-2.5 bg-gradient-to-br from-primary-container to-secondary-container text-on-primary-fixed text-[11px] uppercase tracking-wider font-black rounded-full hover:shadow-[0_0_24px_rgba(0,209,255,0.4)] transition-all active:scale-95">Generate Access</button>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between bg-zinc-950/30 p-5 rounded-2xl border border-white/5 hover:border-white/10 transition-all group">
+<div class="flex items-center gap-5">
+<div class="w-2.5 h-2.5 rounded-full bg-primary-container shadow-[0_0_12px_rgba(0,209,255,0.6)]"></div>
+<div>
+<p class="text-sm font-bold tracking-tight">Production_Node_Beta</p>
+<p class="text-[10px] text-zinc-600 font-mono mt-0.5 tracking-normal">TL_SEC_88x2...f93e</p>
+</div>
+</div>
+<div class="flex gap-4 opacity-40 group-hover:opacity-100 transition-opacity">
+<button class="material-symbols-outlined text-zinc-400 hover:text-white transition-colors text-lg">visibility</button>
+<button class="material-symbols-outlined text-zinc-400 hover:text-error transition-colors text-lg">delete</button>
+</div>
+</div>
+<div class="flex items-center justify-between bg-zinc-950/30 p-5 rounded-2xl border border-white/5 hover:border-white/10 transition-all group">
+<div class="flex items-center gap-5">
+<div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+<div>
+<p class="text-sm font-bold tracking-tight text-zinc-400">Dev_Sandbox_Alpha</p>
+<p class="text-[10px] text-zinc-700 font-mono mt-0.5 tracking-normal">TL_SEC_12k5...2a1b</p>
+</div>
+</div>
+<div class="flex gap-4 opacity-40 group-hover:opacity-100 transition-opacity">
+<button class="material-symbols-outlined text-zinc-400 hover:text-white transition-colors text-lg">visibility</button>
+<button class="material-symbols-outlined text-zinc-400 hover:text-error transition-colors text-lg">delete</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Sidebar Info / Action Panel -->
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<!-- System Status Glass Module -->
+<div class="bg-zinc-950/40 backdrop-blur-3xl rounded-2xl p-8 border border-white/5 shadow-2xl">
+<h4 class="font-headline text-lg font-bold mb-8 flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-secondary-container rounded-full"></span>
+                        Infrastructure Integrity
+                    </h4>
+<div class="space-y-8">
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] uppercase font-bold tracking-[0.2em] text-zinc-500">
+<span>Core Load</span>
+<span class="text-primary-container">32%</span>
+</div>
+<div class="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[32%] transition-all duration-1000 ease-out"></div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] uppercase font-bold tracking-[0.2em] text-zinc-500">
+<span>Security Shield</span>
+<span class="text-secondary-container">99.8%</span>
+</div>
+<div class="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[99.8%] transition-all duration-1000 ease-out"></div>
+</div>
+</div>
+</div>
+<div class="mt-10 pt-8 border-t border-white/5">
+<p class="text-[10px] text-zinc-500 mb-5 uppercase tracking-[0.2em] font-bold">Global Access Points</p>
+<div class="h-40 bg-zinc-950 rounded-2xl overflow-hidden relative border border-white/5 group">
+<div class="absolute inset-0 opacity-40 transition-transform duration-[10s] group-hover:scale-125 bg-[url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&amp;fit=crop&amp;q=80&amp;w=600')] bg-cover bg-center" data-alt="abstract digital world map with neon glowing data connections and high-tech visualization style"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent"></div>
+<div class="absolute bottom-4 left-4 flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_#00d1ff]"></span>
+<span class="text-xs font-bold text-on-surface tracking-tight">3 Active Clusters</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Expressive CTA Card -->
+<div class="bg-gradient-to-br from-secondary-container/20 to-primary-container/10 rounded-2xl p-8 border border-white/10 group hover:border-white/20 transition-all">
+<h4 class="font-headline text-lg font-bold mb-2">Need Support?</h4>
+<p class="text-xs text-zinc-400 leading-relaxed mb-8">Our priority cryptographic response team is available 24/7 for Enterprise nodes.</p>
+<button class="w-full py-4 bg-white text-black text-[11px] font-black uppercase tracking-[0.15em] rounded-xl hover:bg-primary-container transition-all active:scale-95 shadow-xl">Open Priority Ticket</button>
+</div>
+<!-- Danger Zone -->
+<div class="p-8 border border-error/10 rounded-2xl bg-error-container/5 hover:bg-error-container/10 transition-all group">
+<h4 class="font-headline text-lg font-bold text-error mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">report</span>
+                        Danger Zone
+                    </h4>
+<p class="text-xs text-zinc-500 mb-8 leading-relaxed">System-wide reset will revoke all node access and cryptographic keys immediately.</p>
+<button class="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-error/60 group-hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">warning</span>
+                        DEACTIVATE SYSTEM ACCESS
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script src="transitions.js"></script>
+</body></html>
+
