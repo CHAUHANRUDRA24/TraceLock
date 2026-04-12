@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="dark scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#b7eaff",
+                    "tertiary": "#ffd59c",
+                    "tertiary-fixed": "#ffddb1",
+                    "on-primary-fixed-variant": "#004e60",
+                    "surface-container": "#201f1f",
+                    "background": "#131313",
+                    "surface-tint": "#4cd6ff",
+                    "secondary-fixed": "#f1daff",
+                    "on-surface": "#e5e2e1",
+                    "on-primary-fixed": "#001f28",
+                    "on-error": "#690005",
+                    "on-background": "#e5e2e1",
+                    "on-primary-container": "#00566a",
+                    "primary": "#a4e6ff",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#2a2a2a",
+                    "tertiary-container": "#feb127",
+                    "on-tertiary": "#442b00",
+                    "surface-container-highest": "#353534",
+                    "secondary-container": "#9d05ff",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-container": "#f7e6ff",
+                    "inverse-surface": "#e5e2e1",
+                    "on-secondary": "#4b007e",
+                    "on-secondary-fixed": "#2d004f",
+                    "on-primary": "#003543",
+                    "surface-container-low": "#1c1b1b",
+                    "inverse-on-surface": "#313030",
+                    "secondary": "#dfb7ff",
+                    "on-tertiary-fixed": "#291800",
+                    "on-surface-variant": "#bbc9cf",
+                    "tertiary-fixed-dim": "#ffba49",
+                    "primary-fixed-dim": "#4cd6ff",
+                    "surface-variant": "#353534",
+                    "on-tertiary-fixed-variant": "#624000",
+                    "outline": "#859399",
+                    "surface-dim": "#131313",
+                    "on-tertiary-container": "#6b4700",
+                    "primary-container": "#00d1ff",
+                    "on-secondary-fixed-variant": "#6b00b0",
+                    "inverse-primary": "#00677f",
+                    "surface-bright": "#393939",
+                    "outline-variant": "#3c494e",
+                    "error": "#ffb4ab",
+                    "secondary-fixed-dim": "#dfb7ff",
+                    "surface": "#131313"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            },
+            "animation": {
+                "fade-in-up": "fadeInUp 0.8s ease-out forwards",
+                "reveal": "reveal 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards",
+                "float": "float 6s ease-in-out infinite"
+            },
+            "keyframes": {
+                "fadeInUp": {
+                    "0%": { opacity: "0", transform: "translateY(20px)" },
+                    "100%": { opacity: "1", transform: "translateY(0)" }
+                },
+                "reveal": {
+                    "0%": { transform: "translateY(100%)", opacity: "0" },
+                    "100%": { transform: "translateY(0)", opacity: "1" }
+                },
+                "float": {
+                    "0%, 100%": { transform: "translateY(0)" },
+                    "50%": { transform: "translateY(-20px)" }
+                }
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(53, 53, 52, 0.4);
+        backdrop-filter: blur(40px);
+        border: 1px solid rgba(133, 147, 153, 0.15);
+      }
+      .electric-aura {
+        box-shadow: 0 0 64px rgba(0, 209, 255, 0.1);
+      }
+      .neon-gradient {
+        background: linear-gradient(135deg, #00D1FF 0%, #9D00FF 100%);
+      }
+      .neon-text-gradient {
+        background: linear-gradient(135deg, #00D1FF 0%, #9D00FF 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hover-lift {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .hover-lift:hover {
+        transform: translateY(-4px);
+      }
+      .reveal-text {
+        overflow: hidden;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container/30">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-zinc-950/80 backdrop-blur-2xl border-b border-zinc-800/30 px-6 md:px-10 py-4 flex justify-between items-center transition-all duration-500">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2 hover:opacity-80 transition-opacity" href="/">
+<span class="text-2xl font-black tracking-tighter text-[#00D1FF] font-headline">TraceLock</span>
+</a>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#00D1FF] border-b-2 border-[#00D1FF] pb-1 font-inter text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity" href="#">Network</a>
+<a class="text-zinc-400 pb-1 hover:text-[#9D00FF] transition-all font-inter text-xs font-bold uppercase tracking-widest" href="#">Nodes</a>
+<a class="text-zinc-400 pb-1 hover:text-[#9D00FF] transition-all font-inter text-xs font-bold uppercase tracking-widest" href="#">Logs</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center gap-2 bg-surface-container-low/80 px-4 py-1.5 rounded-full border border-outline-variant/30">
+<span class="material-symbols-outlined text-[#00D1FF] text-sm animate-pulse" style="font-variation-settings: 'FILL' 1;">shield</span>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">System: Nominal</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-zinc-400 hover:text-primary transition-colors hover:rotate-12">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<a class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/40 hover:border-primary transition-all active:scale-90" href="/dashboard">
+<img alt="User status indicator" class="w-full h-full object-cover" data-alt="Close-up portrait of a tech professional in a dark studio with blue ambient lighting reflecting on their face" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2FynWofON2FkFf66Nef8LhyAmbLIKBTP-NafX0qm2ost-bmwnx2waQQqXn_VIlSSnsIN9FinTUPo4L0080zEvZr35qkSfcVRRW40DMhDxGtPLoZK7Qewt7MqmxWcT2yDWjZIxqesWuFLCRi4tVV49xW5qxPDjmWM1_0ngdd8_RR-e9MpzaGeW5JP56d4sDYo86kHVG3k0fJfhjYvqNM4GjxokwCsYYJH6hhIFCJT6EKQq_YxwNVveFgczWQakA0E5B-s6NITE3w0I"/>
+</a>
+</div>
+</div>
+</nav>
+<main class="relative pt-24">
+<!-- Hero Section -->
+<section class="relative min-h-[90vh] flex items-center px-6 md:px-10 overflow-hidden">
+<div class="container mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
+<div class="max-w-2xl animate-fade-in-up">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-container/10 border border-primary-container/30 mb-8 backdrop-blur-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="text-[10px] font-black text-primary-container uppercase tracking-widest">Enterprise Document Forensics v4.0</span>
+</div>
+<div class="reveal-text">
+<h1 class="text-6xl md:text-8xl font-black font-headline tracking-tighter leading-[0.9] mb-8 text-on-surface animate-reveal">
+                            Stop Document <br/>
+<span class="neon-text-gradient">Leaks.</span> 
+                            Track the <br/>
+<span class="neon-text-gradient">Source.</span>
+</h1>
+</div>
+<p class="text-xl text-on-surface-variant mb-12 max-w-lg leading-relaxed opacity-0 animate-fade-in-up" style="animation-delay: 0.4s; animation-fill-mode: forwards;">
+                        TraceLock embeds invisible forensic identifiers into every document. Know exactly who leaked what, when, and from which device.
+                    </p>
+<div class="flex flex-wrap gap-6 opacity-0 animate-fade-in-up" style="animation-delay: 0.6s; animation-fill-mode: forwards;">
+<a class="neon-gradient text-on-primary-fixed font-bold py-5 px-12 rounded-full text-lg shadow-xl shadow-primary-container/30 transition-all hover:scale-105 hover:shadow-primary-container/50 active:scale-95 text-center flex items-center justify-center" href="/dashboard">
+                            Get Started
+                        </a>
+<button class="bg-surface-container-low/50 backdrop-blur-md border border-outline-variant/40 text-on-surface font-bold py-5 px-12 rounded-full text-lg hover:bg-surface-container-high hover:border-outline transition-all active:scale-95">
+                            View Demo
+                        </button>
+</div>
+</div>
+<div class="relative lg:h-[650px] flex items-center justify-center opacity-0 animate-fade-in-up" style="animation-delay: 0.3s; animation-fill-mode: forwards;">
+<!-- Abstract 3D Document Visual -->
+<div class="relative w-full aspect-square max-w-lg animate-float">
+<div class="absolute inset-0 neon-gradient opacity-10 blur-[140px] rounded-full"></div>
+<div class="relative z-10 glass-card p-10 rounded-[56px] transform rotate-3 hover:rotate-0 transition-all duration-1000 group">
+<img alt="3D abstract tech visualization" class="w-full h-full object-cover rounded-[40px] opacity-90 mix-blend-screen transition-transform duration-1000 group-hover:scale-[1.02]" data-alt="3D render of floating glass rectangular panels with glowing cyan and purple digital circuits and code patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnKuPjE_Pq0e4JSIgdaE-K_ckBSUBXj6XsoYLcAV9jJ7R_iltuvBZ74qIlVIQ2w8H8J81_sP5BJO8C4OSY_njAerRKodlXitO9qmj6EbhgB_GF5xe45GzRc3eItDeIdwFVXHYC99IdEq2UE_MKN2B5JcGdmm6u4Yf197FryAUHsOG33RT9Iwm2iJW8SpMtg3ISRddYb8ZKUT72w3LvVv1SOmXQw67c1MCa6deLjXpTFl_JLtcUHWXgzJvCVsM9DZPlDSl_kSJrDdv_"/>
+<div class="absolute -bottom-8 -right-8 glass-card p-6 rounded-3xl border border-primary/40 flex items-center gap-4 electric-aura">
+<div class="bg-primary/20 p-3 rounded-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div>
+<div class="text-[10px] text-primary uppercase font-black tracking-widest">Forensic Hash</div>
+<div class="font-mono text-sm tracking-tighter">TX-9902-LOCK-PRO</div>
+</div>
+</div>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[125%] h-[125%] border border-outline-variant/10 rounded-full pointer-events-none animate-[pulse_8s_infinite]"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] border border-outline-variant/5 rounded-full pointer-events-none animate-[pulse_12s_infinite]"></div>
+</div>
+</div>
+</div>
+<!-- Ambient Background Elements -->
+<div class="absolute top-0 right-0 w-[60%] h-[60%] bg-[#9D00FF]/5 blur-[180px] -z-10 animate-pulse"></div>
+<div class="absolute bottom-0 left-0 w-[60%] h-[60%] bg-[#00D1FF]/5 blur-[180px] -z-10 animate-pulse"></div>
+</section>
+<!-- Bento Grid Features -->
+<section class="py-32 px-6 md:px-10" id="features">
+<div class="container mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+<div class="max-w-xl animate-fade-in-up">
+<h2 class="text-4xl md:text-5xl font-black font-headline tracking-tight mb-6 uppercase leading-none">Advanced <br/>Counter-Intelligence</h2>
+<p class="text-on-surface-variant text-lg leading-relaxed">Sophisticated protection layers that are impossible to strip, even with screenshots, crops, or physical printing.</p>
+</div>
+<div class="hidden lg:block text-right opacity-10">
+<span class="text-8xl font-black text-outline font-headline uppercase leading-none select-none">Protection<br/>Suite</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Feature Card 1 -->
+<div class="md:col-span-8 group relative overflow-hidden bg-surface-container-low rounded-[56px] p-12 min-h-[450px] border border-outline-variant/20 hover:border-primary/40 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/5">
+<div class="absolute top-0 right-0 w-1/2 h-full pointer-events-none">
+<img alt="Tech detail" class="w-full h-full object-cover opacity-10 group-hover:opacity-30 transition-all duration-1000 group-hover:scale-110" data-alt="Close-up of a high-tech computer chip with neon blue glowing data paths and futuristic architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUA68oWZSPAI2m9PPlt4CqRW-DUq3o20tWySt6M_Q4-U_GUy9rxdSDHqHwnPYOLD7Gt3AKM04bKwMzTsOvWg8w95NUhCUdeNMdDA5xrIU-w2A_DyjSlZ-59J1pivlbDrEUx6NdfHP7TaYtoG3sxHSBfdYe4fJbhmMAf1dol3PeKMH0sEovpoNxbudnkelSScHGfdy3qQ_i9RVAgdK_m5vExXhMRozzmyCkclCUqkOQotFfZhjAD52OQ8-AufvUyBMalYAKsSbdN363"/>
+</div>
+<div class="relative z-10 flex flex-col h-full justify-between max-w-md">
+<div>
+<span class="material-symbols-outlined text-5xl text-primary mb-8 transition-transform group-hover:scale-110 duration-500" style="font-variation-settings: 'FILL' 1;">visibility_off</span>
+<h3 class="text-3xl font-black font-headline mb-6 uppercase tracking-tight">Invisible Watermarking</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed">Our proprietary Stegano-X tech embeds forensic data within the pixel structure. It survives heavy compression, filters, and high-res printing.</p>
+</div>
+<div class="flex gap-4 mt-10">
+<span class="px-5 py-2.5 bg-background/60 backdrop-blur rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-outline-variant/30 hover:border-primary/50 transition-colors">Anti-Crop</span>
+<span class="px-5 py-2.5 bg-background/60 backdrop-blur rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-outline-variant/30 hover:border-primary/50 transition-colors">Print-Proof</span>
+</div>
+</div>
+</div>
+<!-- Feature Card 2 -->
+<div class="md:col-span-4 bg-secondary-container rounded-[56px] p-12 flex flex-col justify-between text-on-secondary-fixed shadow-2xl shadow-secondary-container/20 group hover:scale-[1.02] transition-all duration-500">
+<div>
+<span class="material-symbols-outlined text-5xl mb-8 group-hover:rotate-12 transition-transform duration-500">person_search</span>
+<h3 class="text-3xl font-black font-headline mb-6 uppercase leading-tight tracking-tight">User Tracking</h3>
+<p class="text-on-secondary-fixed/90 text-lg leading-relaxed">Instant correlation between a leaked file and the specific user session that accessed it, with full path analysis.</p>
+</div>
+<a class="mt-10 bg-black/30 hover:bg-black/40 p-5 rounded-full flex items-center justify-between transition-all group-hover:translate-y-[-4px]" href="/dashboard/analytics">
+<span class="font-bold text-xs uppercase tracking-[0.2em] px-4">Deep Analytics</span>
+<span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</a>
+</div>
+<!-- Feature Card 3 -->
+<div class="md:col-span-4 glass-card rounded-[56px] p-12 border border-outline-variant/30 hover:border-primary/50 transition-all duration-500 group">
+<span class="material-symbols-outlined text-5xl text-[#00D1FF] mb-8 group-hover:scale-110 transition-transform duration-500">dynamic_feed</span>
+<h3 class="text-2xl font-black font-headline mb-4 uppercase tracking-tight">Real-time Logs</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-8">Monitor document movement across your entire network in real-time with our global node distribution.</p>
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center text-[10px] uppercase font-black tracking-widest opacity-60">
+<span>Network Load</span>
+<span class="text-primary">12%</span>
+</div>
+<div class="w-full bg-zinc-800/50 rounded-full h-2 overflow-hidden border border-white/5">
+<div class="bg-[#00D1FF] h-full w-[12%] animate-[shimmer_2s_infinite] shadow-[0_0_10px_#00D1FF]"></div>
+</div>
+</div>
+</div>
+<!-- Feature Card 4 -->
+<div class="md:col-span-8 bg-surface-container rounded-[56px] p-12 border border-outline-variant/20 relative overflow-hidden group">
+<div class="grid md:grid-cols-2 gap-12 items-center h-full">
+<div>
+<h3 class="text-3xl font-black font-headline mb-6 uppercase leading-tight tracking-tight">Forensic Recovery</h3>
+<p class="text-on-surface-variant text-base leading-relaxed">Upload any fragment of a document, even a grainy mobile photo of a screen, and TraceLock will reconstruct the owner's identity with 99.9% certainty.</p>
+<button class="mt-10 text-[#00D1FF] font-black text-xs uppercase tracking-[0.25em] flex items-center gap-2 group/btn">
+                                    Analyze Algorithm
+                                    <span class="material-symbols-outlined group-hover/btn:translate-x-2 transition-transform">trending_flat</span>
+</button>
+</div>
+<div class="bg-background/60 backdrop-blur-xl p-8 rounded-3xl border border-outline-variant/30 font-mono text-[10px] text-[#00D1FF]/80 shadow-inner group-hover:border-primary/30 transition-all duration-700">
+<div class="mb-4 flex justify-between items-center">
+<span class="animate-pulse">SCANNING BLOCK [0x92F...]</span>
+<span class="text-on-surface-variant/40">v8.2</span>
+</div>
+<div class="flex gap-1.5 mb-1.5">
+<div class="w-2.5 h-2.5 bg-primary rounded-sm"></div><div class="w-2.5 h-2.5 bg-primary rounded-sm"></div><div class="w-2.5 h-2.5 bg-zinc-800 rounded-sm"></div><div class="w-2.5 h-2.5 bg-primary rounded-sm"></div>
+<div class="w-2.5 h-2.5 bg-zinc-800 rounded-sm"></div><div class="w-2.5 h-2.5 bg-primary rounded-sm"></div><div class="w-2.5 h-2.5 bg-primary rounded-sm"></div><div class="w-2.5 h-2.5 bg-primary rounded-sm"></div>
+</div>
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 bg-zinc-800 rounded-sm"></div><div class="w-2.5 h-2.5 bg-primary rounded-sm"></div><div class="w-2.5 h-2.5 bg-zinc-800 rounded-sm"></div><div class="w-2.5 h-2.5 bg-zinc-800 rounded-sm"></div>
+<div class="w-2.5 h-2.5 bg-primary rounded-sm"></div><div class="w-2.5 h-2.5 bg-zinc-800 rounded-sm"></div><div class="w-2.5 h-2.5 bg-primary rounded-sm"></div><div class="w-2.5 h-2.5 bg-zinc-800 rounded-sm"></div>
+</div>
+<div class="mt-6 text-on-surface font-black uppercase tracking-widest text-[11px]">RECONSTRUCTION COMPLETE</div>
+<div class="text-secondary-fixed mt-1 font-bold">MATCH FOUND: USER_ID_HQ_8821</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-40 px-6 md:px-10">
+<div class="container mx-auto">
+<div class="relative glass-card rounded-[80px] p-20 md:p-32 overflow-hidden text-center electric-aura">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/15 via-transparent to-secondary-container/15"></div>
+<div class="relative z-10 max-w-4xl mx-auto">
+<h2 class="text-5xl md:text-8xl font-black font-headline tracking-tighter mb-10 text-on-surface uppercase leading-[0.85]">
+                            Secure Your <br/>
+<span class="neon-text-gradient">Information DNA.</span>
+</h2>
+<p class="text-xl md:text-2xl text-on-surface-variant mb-16 leading-relaxed max-w-2xl mx-auto">
+                            Join the world's most secure organizations and stop data leakage before it spreads. 
+                            Deploy TraceLock across your cloud infrastructure today.
+                        </p>
+<div class="flex flex-col md:flex-row gap-8 justify-center items-center">
+<a class="neon-gradient text-on-primary-fixed font-bold py-6 px-16 rounded-full text-xl shadow-2xl shadow-primary-container/50 transition-all hover:scale-105 hover:-translate-y-1 active:scale-95 text-center min-w-[300px]" href="/dashboard">
+                                Start Free Integration
+                            </a>
+<a class="text-on-surface-variant hover:text-on-surface font-black uppercase tracking-[0.25em] transition-all text-sm group flex items-center gap-3" href="#">
+                                Talk to Security Expert
+                                <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Decorative corner accents -->
+<div class="absolute top-0 left-0 w-32 h-32 border-t-2 border-l-2 border-primary-container/40 rounded-tl-[80px]"></div>
+<div class="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-secondary-container/40 rounded-br-[80px]"></div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="py-24 border-t border-outline-variant/20 px-6 md:px-10 bg-zinc-950/20">
+<div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-16">
+<div class="md:col-span-1">
+<span class="text-2xl font-black tracking-tighter text-[#00D1FF] font-headline mb-8 block">TraceLock</span>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-10 max-w-xs">
+                        The ultimate forensic layer for enterprise documents and high-value digital assets. Immutable, invisible, inescapable.
+                    </p>
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/50 transition-all cursor-pointer hover:-translate-y-1">
+<span class="material-symbols-outlined text-xl">terminal</span>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/50 transition-all cursor-pointer hover:-translate-y-1">
+<span class="material-symbols-outlined text-xl">hub</span>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/50 transition-all cursor-pointer hover:-translate-y-1">
+<span class="material-symbols-outlined text-xl">public</span>
+</div>
+</div>
+</div>
+<div>
+<h4 class="font-black uppercase text-[11px] tracking-[0.3em] mb-10 text-on-surface opacity-80">Platform</h4>
+<ul class="space-y-6 text-sm text-on-surface-variant">
+<li><a class="hover:text-primary transition-all flex items-center gap-2" href="#">Network Topology <span class="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span></a></li>
+<li><a class="hover:text-primary transition-all" href="#">Node Infrastructure</a></li>
+<li><a class="hover:text-primary transition-all" href="#">API Reference</a></li>
+<li><a class="hover:text-primary transition-all" href="#">SDK Documentation</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-black uppercase text-[11px] tracking-[0.3em] mb-10 text-on-surface opacity-80">Security</h4>
+<ul class="space-y-6 text-sm text-on-surface-variant">
+<li><a class="hover:text-primary transition-all" href="#">Forensic Recovery</a></li>
+<li><a class="hover:text-primary transition-all" href="#">Compliance Hub</a></li>
+<li><a class="hover:text-primary transition-all" href="#">Data Privacy</a></li>
+<li><a class="hover:text-primary transition-all" href="#">Audit Logging</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-black uppercase text-[11px] tracking-[0.3em] mb-10 text-on-surface opacity-80">Intel Center</h4>
+<p class="text-sm text-on-surface-variant mb-8 leading-relaxed">Stay updated on the latest leak detection and anti-tamper technologies.</p>
+<div class="flex bg-surface-container-low rounded-[20px] p-1.5 border border-outline-variant/30 focus-within:border-primary/50 transition-all group">
+<input class="bg-transparent border-none focus:ring-0 text-sm px-4 flex-1 placeholder:text-zinc-600" placeholder="security@enterprise.com" type="email"/>
+<button class="bg-primary-container text-on-primary-fixed p-3 rounded-[14px] hover:scale-105 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-lg">send</span>
+</button>
+</div>
+</div>
+</div>
+<div class="container mx-auto mt-24 pt-10 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center text-[10px] font-black uppercase tracking-[0.25em] text-on-surface-variant/50">
+<span>© 2024 TraceLock Systems. Encrypted Infrastructure.</span>
+<div class="flex gap-10 mt-6 md:mt-0">
+<a class="hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-on-surface transition-colors" href="#">Security Disclosure</a>
+</div>
+</div>
+</footer>
+</main>
+<script>
+        // Simple Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                    entry.target.style.opacity = "1";
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Apply to sections
+        document.querySelectorAll('section').forEach(section => {
+            if (!section.classList.contains('animate-fade-in-up')) {
+                section.style.opacity = "0";
+                observer.observe(section);
+            }
+        });
+
+        // Smooth nav background transition on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-3', 'bg-zinc-950/95');
+                nav.classList.remove('py-4', 'bg-zinc-950/80');
+            } else {
+                nav.classList.add('py-4', 'bg-zinc-950/80');
+                nav.classList.remove('py-3', 'bg-zinc-950/95');
+            }
+        });
+    </script>
+</body></html>
