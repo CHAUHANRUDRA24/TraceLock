@@ -1,63 +1,48 @@
 /**
  * TraceLock – Shared Navigation & Transition Engine
- * v3 – Clean: no opacity hacks, reliable content reveal
+ * v4 – No opacity hacks. Clean transitions only.
  */
 (function () {
     'use strict';
 
-    /* ─────────────────────────────────────────
-       1. Fade-overlay (page-exit transition)
-    ───────────────────────────────────────── */
+    /* Fade-overlay for page-exit transition */
     const overlay = document.createElement('div');
     overlay.id = 'tl-transition-overlay';
     document.body.appendChild(overlay);
 
-    /* ─────────────────────────────────────────
-       2. On DOM ready
-    ───────────────────────────────────────── */
     document.addEventListener('DOMContentLoaded', () => {
-        // Animate <main> in via CSS class (no opacity:0 on children)
-        const main = document.querySelector('main');
-        if (main) main.classList.add('tl-page-enter');
-
         highlightActiveLink();
         wireNavLinks();
         wireRipples();
         wireToggles();
+        // NOTE: NO content reveal / opacity manipulation here.
+        // Content is always visible. Only the overlay handles transitions.
     });
 
-    /* ─────────────────────────────────────────
-       3. Mark the correct active sidebar link
-    ───────────────────────────────────────── */
+    /* ── Active sidebar link ── */
     function highlightActiveLink() {
-        const raw = location.pathname.split('/').pop()
+        const currentPage = location.pathname.split('/').pop()
             || location.href.split('/').pop().split('?')[0]
-            || '';
-        const currentPage = raw || 'index.html';
+            || 'index.html';
 
         document.querySelectorAll('aside nav a').forEach(link => {
             const linkPage = (link.getAttribute('href') || '').split('/').pop();
             const isActive = linkPage === currentPage;
 
             if (isActive) {
-                // Remove all zinc / hover colour classes
                 link.className = link.className
                     .split(' ')
                     .filter(c => !c.startsWith('text-zinc') &&
                                  !c.startsWith('hover:text') &&
-                                 !c.startsWith('hover:bg'))
+                                 !c.startsWith('hover:bg') &&
+                                 c !== 'group')
                     .join(' ');
-
                 link.classList.add(
-                    'tl-nav-active',
-                    'text-cyan-400',
-                    'bg-cyan-400/10',
-                    'font-bold',
-                    'border',
-                    'border-cyan-400/10'
+                    'tl-nav-active', 'text-cyan-400',
+                    'bg-cyan-400/10', 'font-bold',
+                    'border', 'border-cyan-400/10'
                 );
             } else {
-                // Remove active classes so only one link is active
                 link.classList.remove(
                     'tl-nav-active', 'text-cyan-400',
                     'bg-cyan-400/10', 'border', 'border-cyan-400/10'
@@ -66,16 +51,13 @@
         });
     }
 
-    /* ─────────────────────────────────────────
-       4. Intercept sidebar clicks → fade → navigate
-    ───────────────────────────────────────── */
+    /* ── Intercept nav clicks → fade overlay → navigate ── */
     function wireNavLinks() {
         document.querySelectorAll('aside nav a[href]').forEach(link => {
             link.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
                 if (!href || href === '#' || href.startsWith('http') || href.startsWith('mailto')) return;
 
-                // Skip if already on this page
                 const targetPage  = href.split('/').pop();
                 const currentPage = location.pathname.split('/').pop()
                     || location.href.split('/').pop().split('?')[0];
@@ -88,14 +70,11 @@
         });
     }
 
-    /* ─────────────────────────────────────────
-       5. Ripple effect on buttons
-    ───────────────────────────────────────── */
+    /* ── Ripple on buttons ── */
     function wireRipples() {
         document.querySelectorAll('button').forEach(btn => {
             btn.style.position = 'relative';
             btn.style.overflow = 'hidden';
-
             btn.addEventListener('click', function (e) {
                 const rect = this.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height) * 2.5;
@@ -108,7 +87,7 @@
                     background:rgba(255,255,255,0.1);
                     transform:scale(0);
                     animation:tlRipple 0.6s linear forwards;
-                    pointer-events:none;z-index:999;
+                    pointer-events:none;z-index:10;
                 `;
                 this.appendChild(wave);
                 wave.addEventListener('animationend', () => wave.remove());
@@ -116,9 +95,7 @@
         });
     }
 
-    /* ─────────────────────────────────────────
-       6. Animated toggle switches
-    ───────────────────────────────────────── */
+    /* ── Toggle switches ── */
     function wireToggles() {
         document.querySelectorAll('button').forEach(btn => {
             const track = btn.querySelector('div.rounded-full');
