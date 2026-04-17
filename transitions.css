@@ -2,39 +2,51 @@
    TraceLock – Shared Transition & Animation Layer
    ============================================================ */
 
+:root {
+    --primary: #00d1ff;
+    --secondary: #9d05ff;
+    --bg-dark: #0e0e0e;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+}
+
 /* ---------- Page-transition overlay ---------- */
 #tl-transition-overlay {
     position: fixed;
     inset: 0;
-    background: #0e0e0e;
-    z-index: 9999;
+    background: var(--bg-dark);
+    z-index: 10000;
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1; /* Start visible on load */
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+#tl-transition-overlay.loaded {
+    opacity: 0;
+}
+
 #tl-transition-overlay.fade-out {
     opacity: 1;
     pointer-events: all;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ---------- Page enter animation ---------- */
 @keyframes tlPageEnter {
-    0%   { opacity: 0; transform: translateY(12px); }
-    100% { opacity: 1; transform: translateY(0);    }
-}
-.tl-page-enter {
-    animation: tlPageEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    0%   { opacity: 0; transform: translateY(15px) scale(0.99); filter: blur(10px); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 
-/* ---------- Sidebar link hover shimmer ---------- */
-@keyframes tlShimmer {
-    0%   { background-position: -200% center; }
-    100% { background-position:  200% center; }
+.tl-page-enter {
+    animation: tlPageEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ---------- Navigation Link Aesthetics ---------- */
 .tl-nav-link {
     position: relative;
-    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .tl-nav-link::after {
     content: '';
     position: absolute;
@@ -42,90 +54,109 @@
     background: linear-gradient(
         105deg,
         transparent 40%,
-        rgba(0, 209, 255, 0.06) 50%,
+        rgba(0, 209, 255, 0.08) 50%,
         transparent 60%
     );
     background-size: 200% 100%;
     opacity: 0;
+    border-radius: inherit;
     transition: opacity 0.3s;
-}
-.tl-nav-link:hover::after {
-    opacity: 1;
-    animation: tlShimmer 0.7s ease forwards;
+    pointer-events: none;
 }
 
-/* ---------- Active nav indicator bar ---------- */
-.tl-nav-active {
-    position: relative;
+.tl-nav-link:hover::after {
+    opacity: 1;
+    animation: tlShimmer 1.2s infinite;
 }
-.tl-nav-active::before {
+
+@keyframes tlShimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+}
+
+/* ---------- Sidebar Active Indicator ---------- */
+.tl-nav-active-sidebar {
+    background: rgba(0, 209, 255, 0.08) !important;
+    color: var(--primary) !important;
+    font-weight: 700 !important;
+    box-shadow: inset 0 0 12px rgba(0, 209, 255, 0.05);
+}
+
+.tl-nav-active-sidebar::before {
     content: '';
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 3px;
-    height: 60%;
-    border-radius: 0 3px 3px 0;
-    background: #00d1ff;
-    box-shadow: 0 0 12px rgba(0, 209, 255, 0.6);
-    animation: tlNavBarPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
-}
-@keyframes tlNavBarPop {
-    0%   { height: 0; opacity: 0; }
-    100% { height: 60%; opacity: 1; }
+    width: 4px;
+    height: 24px;
+    background: var(--primary);
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 15px var(--primary);
+    animation: tlBarPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ---------- Stat / card reveal ---------- */
-@keyframes tlFadeUp {
-    0%  { opacity: 0; transform: translateY(20px); }
-    100%{ opacity: 1; transform: translateY(0);    }
-}
-.tl-fade-up {
-    animation: tlFadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+/* ---------- Header Tab Active Indicator ---------- */
+.tl-nav-active-header {
+    color: var(--primary) !important;
+    opacity: 1 !important;
 }
 
-/* ---------- Toggle switch ---------- */
-.tl-toggle input { display: none; }
-.tl-toggle-track {
-    width: 44px; height: 24px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.08);
-    transition: background 0.3s;
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-}
-.tl-toggle input:checked + .tl-toggle-track {
-    background: #00d1ff;
-}
-.tl-toggle-thumb {
+.tl-nav-active-header::after {
+    content: '';
     position: absolute;
-    top: 3px; left: 3px;
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: #fff;
-    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
-                box-shadow 0.3s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-.tl-toggle input:checked ~ .tl-toggle-thumb,
-.tl-toggle input:checked + .tl-toggle-track .tl-toggle-thumb {
-    transform: translateX(20px);
-    box-shadow: 0 2px 12px rgba(0, 209, 255, 0.4);
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+    animation: tlTabSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ---------- Ripple keyframe (used by inline style in transitions.js) ---------- */
-@keyframes tlRipple {
+@keyframes tlBarPop {
+    0% { height: 0; opacity: 0; }
+    100% { height: 24px; opacity: 1; }
+}
+
+@keyframes tlTabSlide {
+    0% { transform: scaleX(0); opacity: 0; }
+    100% { transform: scaleX(1); opacity: 1; }
+}
+
+/* ---------- Content Refresh Pulse ---------- */
+@keyframes tlContentPulse {
+    0% { opacity: 1; filter: blur(0); }
+    50% { opacity: 0.8; filter: blur(2px); }
+    100% { opacity: 1; filter: blur(0); }
+}
+.tl-refresh-pulse {
+    animation: tlContentPulse 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Ripple effect ---------- */
+.tl-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(0);
+    animation: tlRippleAnim 0.6s linear forwards;
+    pointer-events: none;
+    z-index: 99;
+}
+
+@keyframes tlRippleAnim {
     to { transform: scale(4); opacity: 0; }
 }
 
-/* ---------- Scan / active pulse on topbar badge ---------- */
-@keyframes tlPulseRing {
-    0%   { box-shadow: 0 0 0 0 rgba(0,209,255,0.4); }
-    70%  { box-shadow: 0 0 0 8px rgba(0,209,255,0);  }
-    100% { box-shadow: 0 0 0 0 rgba(0,209,255,0);    }
+/* ---------- Premium Reveal ---------- */
+.reveal-visible {
+    opacity: 0;
+    animation: tlPageEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-.tl-pulse-ring {
-    animation: tlPulseRing 2s infinite;
-}
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
