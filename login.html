@@ -1,267 +1,303 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Nexus Access | TraceLock</title>
-<link rel="stylesheet" href="transitions.css"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sign In | TraceLock</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="transitions.css"/>
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     "colors": {
+                        "tertiary": "#f4d9a5",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary": "#dfb7ff",
+                        "surface-container-highest": "#353534",
+                        "tertiary-fixed-dim": "#ddc391",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-variant": "#353534",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#fbdfab",
+                        "surface-tint": "#4cd6ff",
+                        "primary-fixed-dim": "#4cd6ff",
+                        "on-tertiary-fixed-variant": "#56441e",
+                        "on-background": "#e5e2e1",
+                        "surface-container": "#201f1f",
+                        "on-secondary-fixed": "#2d004f",
+                        "tertiary-container": "#d7bd8c",
+                        "surface": "#131313",
+                        "inverse-surface": "#e5e2e1",
                         "primary-container": "#00d1ff",
+                        "error-container": "#93000a",
                         "secondary-container": "#9d05ff",
-                        "surface-container-low": "#0a0a0a",
-                        "surface-dim": "#050505"
+                        "on-surface-variant": "#bbc9cf",
+                        "secondary-fixed-dim": "#dfb7ff",
+                        "inverse-primary": "#00677f",
+                        "surface-bright": "#393939",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-tertiary-container": "#5e4c24",
+                        "on-tertiary": "#3e2e09",
+                        "primary-fixed": "#b7eaff",
+                        "error": "#ffb4ab",
+                        "primary": "#a4e6ff",
+                        "on-primary-fixed-variant": "#004e60",
+                        "inverse-on-surface": "#313030",
+                        "outline-variant": "#3c494e",
+                        "on-primary": "#003543",
+                        "on-secondary-fixed-variant": "#6b00b0",
+                        "on-secondary-container": "#f7e6ff",
+                        "on-primary-container": "#00566a",
+                        "surface-dim": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-fixed": "#001f28",
+                        "secondary-fixed": "#f1daff",
+                        "background": "#131313",
+                        "outline": "#859399",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary": "#4b007e"
                     },
                     "borderRadius": {
-                        "xl": "1.5rem",
-                        "2xl": "2.5rem"
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
                     },
                     "fontFamily": {
-                        "headline": ["Inter"],
-                        "body": ["Inter"]
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
                     }
                 },
             },
         }
     </script>
-<style>
-        :root {
-            --primary: #00d1ff;
-            --secondary: #9d05ff;
-        }
-        body {
-            background-color: #050505;
-            overflow: hidden;
-        }
+    <style>
         .glass-panel {
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: rgba(53, 53, 52, 0.4);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(133, 147, 153, 0.15);
         }
-        .neon-border {
-            position: relative;
+        .neon-glow-primary {
+            box-shadow: 0 0 40px rgba(0, 209, 255, 0.15);
         }
-        .neon-border::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            background: linear-gradient(45deg, var(--primary), transparent, var(--secondary));
-            border-radius: inherit;
-            z-index: -1;
-            opacity: 0.15;
+        .neon-text-gradient {
+            background: linear-gradient(135deg, #00d1ff 0%, #9d05ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .bg-grid {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+        .bg-mesh {
+            background: 
+                radial-gradient(circle at 0% 0%, rgba(0, 209, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(157, 5, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 0%, #0a0a0a 100%);
         }
-        .input-obsidian {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        .input-obsidian:focus {
-            background: rgba(0,0,0,0.5);
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 209, 255, 0.1);
+    
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        /* Unified Reveal System */
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+
         .reveal-item {
             opacity: 0;
-            transform: translateY(15px);
-            transition: all 0.7s cubic-bezier(0.2, 1, 0.2, 1);
+            animation: fadeInUp 0.6s ease-out forwards;
         }
         .reveal-item.reveal-visible {
             opacity: 1;
             transform: translateY(0);
         }
-
-        .stagger-1 { transition-delay: 0.1s; }
-        .stagger-2 { transition-delay: 0.2s; }
-        .stagger-3 { transition-delay: 0.3s; }
-        .stagger-4 { transition-delay: 0.4s; }
-        .stagger-5 { transition-delay: 0.5s; }
-
-        .btn-premium {
-            background: linear-gradient(90deg, #00d1ff, #007aff);
-            transition: all 0.3s ease;
-        }
-        .btn-premium:hover {
-            box-shadow: 0 0 25px rgba(0, 209, 255, 0.4);
-            transform: translateY(-1px);
-        }
-        .btn-google {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s ease;
-        }
-        .btn-google:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(255,255,255,0.1);
-        }
     </style>
 </head>
-<body class="text-zinc-200 min-h-screen flex items-center justify-center font-body selection:bg-cyan-500/20">
-<!-- Dynamic Background -->
-<div class="fixed inset-0 z-0 bg-grid"></div>
-<div class="fixed inset-0 z-0 bg-gradient-to-tr from-cyan-500/10 via-transparent to-purple-500/10 opacity-30"></div>
-<div class="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] bg-cyan-500/5 blur-[150px] rounded-full"></div>
-<div class="fixed bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-purple-500/5 blur-[150px] rounded-full"></div>
-
-<main class="relative z-10 w-full max-w-md px-6">
-<!-- Branding -->
-<div class="text-center mb-10 reveal-item stagger-1">
-<div class="inline-block relative mb-4">
-<div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 p-[1px] shadow-[0_0_30px_rgba(0,209,255,0.2)]">
-<div class="w-full h-full bg-[#080808] rounded-2xl flex items-center justify-center">
-<span class="material-symbols-outlined text-4xl text-cyan-400" style="font-variation-settings: 'FILL' 1;">security</span>
-</div>
-</div>
-<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-zinc-950 rounded-full border border-white/5 flex items-center justify-center">
-<div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse shadow-[0_0_8px_#00d1ff]"></div>
-</div>
-</div>
-<h1 class="text-4xl font-black tracking-tighter text-white font-manrope">TraceLock</h1>
-<p class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.3em] mt-3">Node Virtualization Gateway</p>
-</div>
-
-<!-- Access Panel -->
-<div class="glass-panel neon-border rounded-[2.5rem] p-10 reveal-item stagger-2">
-<h2 class="text-xl font-bold text-white mb-8 tracking-tight">Access Protocol</h2>
-
-<form class="space-y-6" id="loginForm" novalidate="">
-<div class="space-y-2">
-<label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block ml-1" for="email">Identity Fragment</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 text-lg">fingerprint</span>
-<input autocomplete="email" class="w-full input-obsidian rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none" id="email" name="email" placeholder="admin@tracelock.io" required="" type="email"/>
-</div>
-</div>
-
-<div class="space-y-2">
-<div class="flex justify-between items-center ml-1">
-<label class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block" for="password">Encryption Key</label>
-<a class="text-[10px] font-bold text-cyan-500 hover:text-cyan-300 transition-colors uppercase tracking-widest" href="#">Key Lost?</a>
-</div>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 text-lg">lock</span>
-<input autocomplete="current-password" class="w-full input-obsidian rounded-2xl py-4 pl-12 pr-12 text-sm focus:outline-none" id="password" name="password" placeholder="••••••••" required="" type="password"/>
-<button class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-white transition-colors" id="togglePassword" type="button">
-<span class="material-symbols-outlined text-lg" id="toggleIcon">visibility</span>
-</button>
-</div>
-</div>
-
-<button class="w-full btn-premium py-4 rounded-full font-bold text-white shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 group" type="submit">
-                Initialize Auth
-                <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">bolt</span>
-</button>
-</form>
-
-<div class="relative my-8 text-center">
-<div class="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-white/5"></div>
-<span class="relative bg-[#0a0a0a] px-4 text-[9px] font-bold text-zinc-600 uppercase tracking-[0.2em]">Cross-Node Handshake</span>
-</div>
-
-<button class="w-full btn-google py-4 rounded-full flex items-center justify-center gap-4 active:scale-[0.98] transition-all group" id="google-login-btn">
-<svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
-<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
-<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
-<path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
-</svg>
-<span class="text-xs font-bold text-white tracking-widest uppercase opacity-80 group-hover:opacity-100 transition-opacity">Continuum with Google</span>
-</button>
-</div>
-
-<!-- Meta Footer -->
-<div class="mt-8 flex justify-between items-center px-4 reveal-item stagger-3">
-<div class="flex gap-6 text-[9px] font-bold text-zinc-600 uppercase tracking-widest">
-<a class="hover:text-cyan-400 transition-colors" href="#">Security Logs</a>
-<a class="hover:text-cyan-400 transition-colors" href="#">System Terms</a>
-</div>
-<div class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest opacity-60">
-        © 2026 TRACELOCK INC
+<body class="bg-[#0a0a0a] text-on-surface font-body min-h-screen flex items-center justify-center selection:bg-primary-container selection:text-on-primary-container">
+    <!-- Abstract Background Elements -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-mesh">
+        <div class="absolute top-[-20%] left-[-20%] w-[70%] h-[70%] bg-primary-container/10 blur-[160px] rounded-full animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-[-20%] right-[-20%] w-[70%] h-[70%] bg-secondary-container/10 blur-[160px] rounded-full animate-pulse" style="animation-duration: 10s; animation-delay: 1s;"></div>
+        <div class="absolute inset-0 opacity-[0.03] mix-blend-overlay" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAsRZeym461DHq8kaB6YnC8WOuPubPK3zy_nR78fJhMpSoU2jUhB9tltr-rpfDSVLnQ4dEeX_zct4-rRC0j1JB-SkRwZI2KNoAbQT5J_e_EXMYyzMh7KoiCIRS_9-GHTYB2KCgqcs3veNBpXfnnjfS4TSSNNO5AVZEw_CujnJ_Zhl9Yt6SzsAdP8mmOOTs3mi157539rlfUN53kDkFLwuANBqL3795IIjPPiTZtdIabnxR3GmRlnTi-3K4KTzv9B41REtljOZg6ljLK'); background-size: 400px;"></div>
     </div>
-</div>
-</main>
+    <main class="relative z-10 w-full max-w-md px-6 py-12">
+        <!-- Brand Identity -->
+        <div class="flex flex-col items-center mb-10">
+            <div class="w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-primary-container to-secondary-container p-[1px]">
+                <div class="w-full h-full bg-surface-container-lowest rounded-2xl flex items-center justify-center">
+                    <span class="material-symbols-outlined text-4xl text-primary-container" style="font-variation-settings: 'FILL' 1;">shield_lock</span>
+                </div>
+            </div>
+            <h1 class="font-headline text-3xl font-extrabold tracking-tight text-white">TraceLock</h1>
+            <p class="text-on-surface-variant font-label text-sm mt-2">Enter the Obsidian Ether</p>
+        </div>
+        <!-- Login Card -->
+        <div class="glass-panel rounded-3xl p-8 neon-glow-primary animate-fade-in-up">
+            <h2 class="font-headline text-xl font-bold mb-8 text-white">Sign In</h2>
+            <form class="space-y-6" id="loginForm">
+                <!-- Email Field -->
+                <div class="space-y-2 reveal-item stagger-1">
+                    <label class="block text-xs font-semibold tracking-wider text-on-surface-variant uppercase ml-1" for="email">Email Address</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-outline text-lg group-focus-within:text-primary-container transition-colors">mail</span>
+                        </div>
+                        <input class="w-full bg-surface-container-low border-none rounded-2xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/50 focus:ring-2 focus:ring-primary-container/30 transition-all outline-none transition-all duration-300 ease-in-out" id="email" name="email" placeholder="name@company.com" type="email"/>
+                    </div>
+                </div>
+                <!-- Password Field -->
+                <div class="space-y-2 reveal-item stagger-2">
+                    <div class="flex justify-between items-center ml-1">
+                        <label class="block text-xs font-semibold tracking-wider text-on-surface-variant uppercase" for="password">Password</label>
+                        <a class="text-xs font-semibold text-primary-container hover:text-primary transition-colors" href="#">Forgot Password?</a>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-outline text-lg group-focus-within:text-primary-container transition-colors">lock</span>
+                        </div>
+                        <input class="w-full bg-surface-container-low border-none rounded-2xl py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/50 focus:ring-2 focus:ring-primary-container/30 transition-all outline-none transition-all duration-300 ease-in-out" id="password" name="password" placeholder="••••••••" type="password"/>
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center">
+                            <button class="text-outline hover:text-on-surface transition-colors transition-all duration-300 ease-in-out" id="togglePassword" type="button">
+                                <span class="material-symbols-outlined text-lg" id="toggleIcon">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Action Button -->
+                <button class="w-full bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-fixed font-headline font-bold py-4 rounded-full hover:shadow-[0_0_20px_rgba(0,209,255,0.4)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 reveal-item stagger-3 transition-all duration-300 ease-in-out" type="submit">
+                    Sign In
+                    <span class="material-symbols-outlined text-xl">arrow_forward</span>
+                </button>
+            </form>
+            <!-- Divider -->
+            <div class="relative my-8 reveal-item stagger-4">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-outline-variant/30"></div>
+                </div>
+                <div class="relative flex justify-center text-xs font-semibold uppercase">
+                    <span class="bg-surface-container-lowest px-4 text-on-surface-variant">Or continue with</span>
+                </div>
+            </div>
+            <!-- Social Logins -->
+            <div class="reveal-item stagger-5">
+                <button class="w-full flex items-center justify-center gap-3 bg-surface-container-low border border-outline-variant/20 py-4 rounded-2xl hover:bg-surface-container-high transition-all group transition-all duration-300 ease-in-out" id="google-login-btn">
+                    <svg class="w-5 h-5 group-hover:scale-110 transition-transform" viewbox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="currentColor"></path>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="currentColor"></path>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="currentColor"></path>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="currentColor"></path>
+                    </svg>
+                    <span class="text-sm font-semibold text-white">Continue with Google</span>
+                </button>
+            </div>
+        </div>
+        <!-- Toggle Sign Up -->
+        <p class="text-center mt-8 text-on-surface-variant text-sm font-label">
+            Don't have an account? 
+            <a class="text-secondary-container font-bold hover:underline underline-offset-4 ml-1" href="#">Sign Up</a>
+        </p>
+        <!-- Dynamic Visual Accent (Bento-style detail) -->
+        <div class="mt-12 grid grid-cols-3 gap-2 opacity-40">
+            <div class="h-1 bg-gradient-to-r from-primary-container/0 to-primary-container rounded-full"></div>
+            <div class="h-1 bg-primary-container rounded-full"></div>
+            <div class="h-1 bg-gradient-to-r from-primary-container to-primary-container/0 rounded-full"></div>
+        </div>
+    </main>
+    <!-- Footer Meta -->
+    <footer class="fixed bottom-6 w-full px-6 flex justify-between items-center text-[10px] font-semibold text-outline uppercase tracking-widest z-10">
+        <div class="flex gap-4">
+            <a class="hover:text-primary-container transition-colors" href="#">Privacy Policy</a>
+            <a class="hover:text-primary-container transition-colors" href="#">Terms of Service</a>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_rgba(0,209,255,0.8)]"></span>
+            System Operational
+        </div>
+    </footer>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-    
-    const firebaseConfig = {
-      apiKey: "AIzaSyBU-qmN4EP_SrueaYPRu_Z8q9VXnlqlbBI",
-      authDomain: "tracelock-2b9e3.firebaseapp.com",
-      projectId: "tracelock-2b9e3",
-      storageBucket: "tracelock-2b9e3.firebasestorage.app",
-      messagingSenderId: "893812064883",
-      appId: "1:893812064883:web:2c6b1a72ac718a4947e006"
-    };
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+        
+        const firebaseConfig = {
+          apiKey: "AIzaSyBU-qmN4EP_SrueaYPRu_Z8q9VXnlqlbBI",
+          authDomain: "tracelock-2b9e3.firebaseapp.com",
+          projectId: "tracelock-2b9e3",
+          storageBucket: "tracelock-2b9e3.firebasestorage.app",
+          messagingSenderId: "893812064883",
+          appId: "1:893812064883:web:2c6b1a72ac718a4947e006"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-    // DOM Elements
-    const loginForm = document.getElementById('loginForm');
-    const googleBtn = document.getElementById('google-login-btn');
-    const toggleBtn = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
-    const toggleIcon = document.getElementById('toggleIcon');
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const googleBtn = document.getElementById('google-login-btn');
+        const toggleBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
 
-    // Google Login Logic
-    googleBtn.addEventListener('click', async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-            console.log("Authenticated:", result.user.displayName);
+        // Google Login Logic
+        googleBtn.addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                console.log("Authenticated:", result.user.displayName);
+                triggerTransition('dashboard.html');
+            } catch (error) {
+                console.error("Auth error:", error.code);
+            }
+        });
+
+        // Form Redirection
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
             triggerTransition('dashboard.html');
-        } catch (error) {
-            console.error("Auth error:", error.code);
-            // Optionally handle error UI here
+        });
+
+        // Unified Transition Trigger
+        function triggerTransition(target) {
+            if (window.triggerPageTransition) {
+                window.triggerPageTransition(target);
+            } else {
+                window.location.href = target;
+            }
         }
-    });
 
-    // Form Redirection
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        triggerTransition('dashboard.html');
-    });
+        // Password Toggle
+        toggleBtn.addEventListener('click', () => {
+            const isSecret = passwordInput.getAttribute('type') === 'password';
+            passwordInput.setAttribute('type', isSecret ? 'text' : 'password');
+            toggleIcon.textContent = isSecret ? 'visibility_off' : 'visibility';
+        });
 
-    // Unified Transition Trigger
-    function triggerTransition(target) {
-        const overlay = document.getElementById('tl-transition-overlay');
-        if (overlay) {
-            overlay.classList.add('fade-out');
-            setTimeout(() => { window.location.href = target; }, 400);
-        } else {
-            window.location.href = target;
-        }
-    }
-
-    // Password Toggle
-    toggleBtn.addEventListener('click', () => {
-        const isSecret = passwordInput.getAttribute('type') === 'password';
-        passwordInput.setAttribute('type', isSecret ? 'text' : 'password');
-        toggleIcon.textContent = isSecret ? 'visibility_off' : 'visibility';
-        toggleIcon.style.color = isSecret ? '#00d1ff' : '';
-    });
-
-    // Initialize Reveal Animations
-    setTimeout(() => {
-        document.querySelectorAll('.reveal-item').forEach(el => el.classList.add('reveal-visible'));
-    }, 100);
-</script>
-<script src="transitions.js"></script>
-</body></html>
-
-
+        // Initialize Reveal Animations
+        setTimeout(() => {
+            document.querySelectorAll('.reveal-item').forEach(el => el.classList.add('reveal-visible'));
+        }, 100);
+    </script>
+    <script src="transitions.js"></script>
+</body>
+</html>
