@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
 import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, limit, onSnapshot, getCountFromServer, deleteDoc, doc, getDocs, where, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-import { getAuth, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { getAuth, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -53,4 +53,4 @@ async function logAccess(documentId, traceId, event, node = "Global-Node-01") {
   }
 }
 
-export { analytics, db, auth, storage, logActivity, logAccess, collection, addDoc, serverTimestamp, query, orderBy, limit, onSnapshot, getCountFromServer, deleteDoc, doc, getDocs, where, setDoc, getDoc, updateDoc, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, ref, uploadBytesResumable, getDownloadURL, deleteObject };
+export { analytics, db, auth, storage, logActivity, logAccess, collection, addDoc, serverTimestamp, query, orderBy, limit, onSnapshot, getCountFromServer, deleteDoc, doc, getDocs, where, setDoc, getDoc, updateDoc, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, ref, uploadBytesResumable, getDownloadURL, deleteObject };

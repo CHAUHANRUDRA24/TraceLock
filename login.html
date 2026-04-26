@@ -155,6 +155,12 @@
         <!-- Login Card -->
         <div class="glass-panel rounded-3xl p-8 neon-glow-primary animate-fade-in-up">
             <h2 class="font-headline text-xl font-bold mb-8 text-white">Sign In</h2>
+            
+            <!-- Error Alert -->
+            <div id="error-alert" class="hidden mb-6 p-4 rounded-2xl bg-error/10 border border-error/20 text-error text-sm font-semibold animate-pulse text-center">
+                Invalid credentials. Please try again.
+            </div>
+
             <form class="space-y-6" id="loginForm">
                 <!-- Email Field -->
                 <div class="space-y-2 reveal-item stagger-1">
@@ -237,7 +243,7 @@
     </footer>
 
     <script type="module">
-        import { auth, db, logActivity, GoogleAuthProvider, signInWithPopup, setDoc, doc, serverTimestamp } from './firebase-config.js';
+        import { auth, db, logActivity, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, setDoc, doc, serverTimestamp } from './firebase-config.js';
         const provider = new GoogleAuthProvider();
 
         // DOM Elements
@@ -246,6 +252,13 @@
         const toggleBtn = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
         const toggleIcon = document.getElementById('toggleIcon');
+        const errorAlert = document.getElementById('error-alert');
+
+        function showError(msg) {
+            errorAlert.textContent = msg;
+            errorAlert.classList.remove('hidden');
+            setTimeout(() => errorAlert.classList.add('hidden'), 6000);
+        }
 
         // Google Login Logic
         googleBtn.addEventListener('click', async () => {
@@ -258,18 +271,21 @@
                 const result = await signInWithPopup(auth, provider);
                 const user = result.user;
                 
-                // Register/Sync user in Firestore
-                await setDoc(doc(db, "users", user.uid), {
-                    displayName: user.displayName,
-                    email: user.email,
-                    photoURL: user.photoURL,
-                    lastLogin: serverTimestamp()
-                }, { merge: true });
-
                 localStorage.setItem('tracelock_user_photo', user.photoURL);
                 localStorage.setItem('tracelock_user_name', user.displayName);
-                
-                await logActivity("User Login Detected", `${user.displayName} authenticated via Google`, "auth");
+
+                // Register/Sync user in Firestore (Optional/Fallback if API disabled)
+                try {
+                    await setDoc(doc(db, "users", user.uid), {
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        lastLogin: serverTimestamp()
+                    }, { merge: true });
+                    await logActivity("User Login Detected", `${user.displayName} authenticated via Google`, "auth");
+                } catch (fsError) {
+                    console.warn("Firestore sync skipped (API may not be enabled):", fsError.message);
+                }
 
                 span.innerText = 'Link Secured';
                 googleBtn.classList.replace('bg-surface-container-low', 'bg-emerald-500');
@@ -279,15 +295,43 @@
                 }, 800);
             } catch (error) {
                 console.error("Auth error:", error.code);
+                showError("Google Authentication failed. Check your connection.");
                 span.innerText = originalText;
                 googleBtn.disabled = false;
             }
         });
 
-        // Form Redirection
-        loginForm.addEventListener('submit', (e) => {
+        // Actual Email/Password Login
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            triggerTransition('dashboard.html');
+            const email = loginForm.email.value;
+            const password = loginForm.password.value;
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+
+            if (!email || !password) {
+                showError("Please enter both email and password.");
+                return;
+            }
+
+            submitBtn.disabled = true;
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Securing Link... <span class="material-symbols-outlined animate-spin text-xl">sync</span>';
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                await logActivity("User Login", `Authenticated user: ${email}`, "auth");
+                triggerTransition('dashboard.html');
+            } catch (error) {
+                console.error("Login error:", error.code);
+                let msg = "Invalid credentials. Please try again.";
+                if (error.code === 'auth/user-not-found') msg = "User account not found.";
+                if (error.code === 'auth/wrong-password') msg = "Incorrect password.";
+                if (error.code === 'auth/too-many-requests') msg = "Too many attempts. Try later.";
+                
+                showError(msg);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalHTML;
+            }
         });
 
         // Unified Transition Trigger
