@@ -123,12 +123,19 @@
             0% { transform: scaleY(0); }
             100% { transform: scaleY(1); }
         }
-        .animate-delay-100 { animation-delay: 100ms; }
-        .animate-delay-200 { animation-delay: 200ms; }
-        .animate-delay-300 { animation-delay: 300ms; }
-        .animate-delay-400 { animation-delay: 400ms; }
         .animate-delay-500 { animation-delay: 500ms; }
+        
+        /* Chart Styles */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
     </style>
+    <!-- Analytics Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body class="font-body selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
 <!-- SideNavBar -->
@@ -183,7 +190,7 @@
 </div>
 <div class="flex gap-4">
 <button class="material-symbols-outlined text-zinc-400 hover:text-cyan-300 transition-colors opacity-80 hover:opacity-100">notifications</button>
-<button class="material-symbols-outlined text-zinc-400 hover:text-cyan-300 transition-colors opacity-80 hover:opacity-100">account_circle</button>
+<button class="material-symbols-outlined text-zinc-400 hover:text-cyan-300 transition-colors opacity-80 hover:opacity-100 user-profile-icon">account_circle</button>
 </div>
 </div>
 </header>
@@ -196,8 +203,8 @@
 <p class="text-on-surface-variant mt-2 max-w-md">Real-time cryptographic access monitoring and document interaction heuristics across the global network.</p>
 </div>
 <div class="flex gap-4">
-<button class="px-6 py-3 rounded-xl border border-outline-variant/30 font-bold text-xs uppercase tracking-widest hover:bg-surface-container-low transition-colors">Export Report</button>
-<button class="px-6 py-3 rounded-xl bg-primary-container text-on-primary-fixed font-bold text-xs uppercase tracking-widest flex items-center gap-2 hover:shadow-[0_0_20px_rgba(0,209,255,0.3)] transition-all">
+<button id="export-report-btn" class="px-6 py-3 rounded-xl border border-outline-variant/30 font-bold text-xs uppercase tracking-widest hover:bg-surface-container-low transition-colors">Export Report</button>
+<button id="live-update-btn" class="px-6 py-3 rounded-xl bg-primary-container text-on-primary-fixed font-bold text-xs uppercase tracking-widest flex items-center gap-2 hover:shadow-[0_0_20px_rgba(0,209,255,0.3)] transition-all">
 <span class="material-symbols-outlined text-sm">refresh</span>
                     Live Update
                 </button>
@@ -219,24 +226,8 @@
 </div>
 </div>
 <!-- Chart Bars with animations -->
-<div class="h-64 flex items-end gap-1 relative group">
-<div class="flex-1 bg-primary-container/20 h-[40%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar"></div>
-<div class="flex-1 bg-primary-container/20 h-[55%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar animate-delay-100"></div>
-<div class="flex-1 bg-primary-container/20 h-[45%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar animate-delay-200"></div>
-<div class="flex-1 bg-secondary-container/20 h-[85%] rounded-t-sm border-t-2 border-secondary-container/60 hover:bg-secondary-container/40 transition-all cursor-pointer chart-bar animate-delay-300"></div>
-<div class="flex-1 bg-primary-container/20 h-[60%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar animate-delay-100"></div>
-<div class="flex-1 bg-primary-container/20 h-[70%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar animate-delay-200"></div>
-<div class="flex-1 bg-primary-container/20 h-[50%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar animate-delay-300"></div>
-<div class="flex-1 bg-primary-container/20 h-[40%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar animate-delay-400"></div>
-<div class="flex-1 bg-primary-container/20 h-[90%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar animate-delay-100"></div>
-<div class="flex-1 bg-secondary-container/20 h-[65%] rounded-t-sm border-t-2 border-secondary-container/60 hover:bg-secondary-container/40 transition-all cursor-pointer chart-bar animate-delay-200"></div>
-<div class="flex-1 bg-primary-container/20 h-[40%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar animate-delay-300"></div>
-<div class="flex-1 bg-primary-container/20 h-[55%] rounded-t-sm hover:bg-primary-container/40 transition-all cursor-pointer chart-bar animate-delay-400"></div>
-<!-- Overlay Legend Line (Decorative SVG) -->
-<svg class="absolute inset-0 w-full h-full opacity-60 pointer-events-none" viewbox="0 0 800 200">
-<path class="chart-line-path" d="M0,150 Q100,50 200,120 T400,80 T600,140 T800,20" fill="none" stroke="#00D1FF" stroke-width="3"></path>
-<path class="chart-line-path opacity-50" d="M0,160 Q100,100 200,140 T400,120 T600,170 T800,90" fill="none" stroke="#9D00FF" stroke-dasharray="8 4" stroke-width="2"></path>
-</svg>
+<div class="h-64 relative">
+    <canvas id="networkAccessChart"></canvas>
 </div>
 </div>
 <!-- Status Cards -->
@@ -244,7 +235,7 @@
 <div class="glass-panel rounded-lg p-6 flex items-center justify-between hover:border-primary-container/40 transition-all">
 <div>
 <p class="text-xs text-on-surface-variant font-medium">Uptime Reality</p>
-<p class="text-2xl font-headline font-black text-on-surface">99.9992%</p>
+<p id="uptime-text" class="text-2xl font-headline font-black text-on-surface">99.9992%</p>
 </div>
 <div class="w-12 h-12 rounded-full border-2 border-primary-container/30 flex items-center justify-center">
 <span class="material-symbols-outlined text-primary-container animate-pulse">speed</span>
@@ -253,7 +244,7 @@
 <div class="glass-panel rounded-lg p-6 flex items-center justify-between border-l-4 border-secondary-container hover:translate-x-1 transition-transform">
 <div>
 <p class="text-xs text-on-surface-variant font-medium">Threats Neutralized</p>
-<p class="text-2xl font-headline font-black text-secondary">4.2k</p>
+<p id="threats-neutralized-text" class="text-2xl font-headline font-black text-secondary">0</p>
 </div>
 <div class="w-12 h-12 rounded-full bg-secondary-container/10 flex items-center justify-center">
 <span class="material-symbols-outlined text-secondary">security_update_good</span>
@@ -286,20 +277,33 @@
 <div class="absolute top-[45%] left-[55%] w-3 h-3 bg-secondary-container rounded-full animate-pulse shadow-[0_0_15px_#9D00FF]"></div>
 <div class="absolute top-[60%] left-[80%] w-5 h-5 bg-primary-container rounded-full animate-pulse shadow-[0_0_15px_#00D1FF]"></div>
 </div>
-<div class="mt-6 space-y-3">
-<div class="flex justify-between text-xs">
-<span class="text-zinc-400">North America</span>
-<span class="text-on-surface font-bold">42%</span>
+<div class="mt-6 space-y-4" id="region-stats">
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-widest text-zinc-500">
+<span>North America</span>
+<span id="region-na-val">42%</span>
 </div>
-<div class="w-full h-1 bg-zinc-800 rounded-full">
-<div class="h-full bg-primary-container animate-reveal-width" style="--target-width: 42%"></div>
+<div class="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+<div id="region-na-bar" class="h-full bg-primary-container transition-all duration-1000" style="width: 42%"></div>
 </div>
-<div class="flex justify-between text-xs mt-4">
-<span class="text-zinc-400">Europe Central</span>
-<span class="text-on-surface font-bold">38%</span>
 </div>
-<div class="w-full h-1 bg-zinc-800 rounded-full">
-<div class="h-full bg-secondary-container animate-reveal-width animate-delay-200" style="--target-width: 38%"></div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-widest text-zinc-500">
+<span>Europe Central</span>
+<span id="region-eu-val">38%</span>
+</div>
+<div class="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+<div id="region-eu-bar" class="h-full bg-secondary-container transition-all duration-1000" style="width: 38%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-widest text-zinc-500">
+<span>Asia / Pacific</span>
+<span id="region-asia-val">20%</span>
+</div>
+<div class="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+<div id="region-asia-bar" class="h-full bg-primary-fixed transition-all duration-1000" style="width: 20%"></div>
+</div>
 </div>
 </div>
 </div>
@@ -321,71 +325,9 @@
 </div>
 </div>
 </div>
-<!-- Heatmap Grid with stagger animations -->
-<div class="grid grid-cols-12 gap-1.5">
-<!-- Row 1 -->
-<div class="aspect-square rounded-sm bg-primary-container/10 animate-stagger-item animate-delay-100"></div>
-<div class="aspect-square rounded-sm bg-primary-container/20 animate-stagger-item animate-delay-200"></div>
-<div class="aspect-square rounded-sm bg-primary-container/40 animate-stagger-item animate-delay-300"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10 animate-stagger-item animate-delay-100"></div>
-<div class="aspect-square rounded-sm bg-zinc-800 animate-stagger-item animate-delay-200"></div>
-<div class="aspect-square rounded-sm bg-primary-container/60 animate-stagger-item animate-delay-300"></div>
-<div class="aspect-square rounded-sm bg-primary-container/80 animate-stagger-item animate-delay-400"></div>
-<div class="aspect-square rounded-sm bg-secondary-container/40 animate-stagger-item animate-delay-500"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10 animate-stagger-item animate-delay-100"></div>
-<div class="aspect-square rounded-sm bg-primary-container/20 animate-stagger-item animate-delay-200"></div>
-<div class="aspect-square rounded-sm bg-primary-container/30 animate-stagger-item animate-delay-300"></div>
-<div class="aspect-square rounded-sm bg-zinc-800 animate-stagger-item animate-delay-400"></div>
-<!-- Row 2 -->
-<div class="aspect-square rounded-sm bg-zinc-800 animate-stagger-item animate-delay-200"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10 animate-stagger-item animate-delay-300"></div>
-<div class="aspect-square rounded-sm bg-primary-container/50 animate-stagger-item animate-delay-400"></div>
-<div class="aspect-square rounded-sm bg-secondary-container/90 animate-stagger-item animate-delay-500"></div>
-<div class="aspect-square rounded-sm bg-primary-container/60 animate-stagger-item animate-delay-100"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10 animate-stagger-item animate-delay-200"></div>
-<div class="aspect-square rounded-sm bg-zinc-800 animate-stagger-item animate-delay-300"></div>
-<div class="aspect-square rounded-sm bg-zinc-800 animate-stagger-item animate-delay-400"></div>
-<div class="aspect-square rounded-sm bg-primary-container/20 animate-stagger-item animate-delay-100"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10 animate-stagger-item animate-delay-200"></div>
-<div class="aspect-square rounded-sm bg-primary-container/40 animate-stagger-item animate-delay-300"></div>
-<div class="aspect-square rounded-sm bg-primary-container/20 animate-stagger-item animate-delay-400"></div>
-<!-- Row 3-5 simplified -->
-<div class="aspect-square rounded-sm bg-primary-container/30 animate-stagger-item animate-delay-200"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10"></div>
-<div class="aspect-square rounded-sm bg-primary-container/20"></div>
-<div class="aspect-square rounded-sm bg-primary-container/40"></div>
-<div class="aspect-square rounded-sm bg-primary-container/60"></div>
-<div class="aspect-square rounded-sm bg-secondary-container/40"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10"></div>
-<div class="aspect-square rounded-sm bg-primary-container/80"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10"></div>
-<div class="aspect-square rounded-sm bg-primary-container/20"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-primary-container/60"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10"></div>
-<div class="aspect-square rounded-sm bg-primary-container/20"></div>
-<div class="aspect-square rounded-sm bg-primary-container/40"></div>
-<div class="aspect-square rounded-sm bg-primary-container/20"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-primary-container/40"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10"></div>
-<div class="aspect-square rounded-sm bg-primary-container/20"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10"></div>
-<div class="aspect-square rounded-sm bg-primary-container/30"></div>
-<div class="aspect-square rounded-sm bg-primary-container/80"></div>
-<div class="aspect-square rounded-sm bg-secondary-container/60"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-zinc-800"></div>
-<div class="aspect-square rounded-sm bg-primary-container/10"></div>
+<!-- Heatmap Grid with dynamic data-intensity -->
+<div id="activityHeatmap" class="grid grid-cols-12 gap-1.5 h-48">
+    <!-- Generated via JS -->
 </div>
 <div class="mt-6 pt-6 border-t border-zinc-800/50 flex justify-between">
 <div class="flex flex-col">
@@ -460,5 +402,194 @@
 <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-500">bolt</span>
 </button>
 </div>
-<script src="transitions.js"></script>
+    <script type="module">
+        import { db, auth, logActivity, collection, query, orderBy, limit, onSnapshot, onAuthStateChanged, getCountFromServer, getDocs, where, serverTimestamp } from './firebase-config.js';
+
+        // --- AUTH GUARD ---
+        onAuthStateChanged(auth, (user) => {
+            if (!user) window.location.href = 'login.html';
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableBody = document.querySelector('tbody');
+            const threatsCountEl = document.getElementById('threats-neutralized-text');
+            const storageBar = document.querySelector('.bg-gradient-to-r.animate-reveal-width');
+            const storageText = document.querySelector('.text-\\[10px\\].text-zinc-400.font-bold');
+            const uptimeEl = document.getElementById('uptime-text');
+            
+            let networkChart;
+
+            // 1. NETWORK ACCESS CHART (Line/Bar)
+            const initNetworkChart = (data) => {
+                const ctx = document.getElementById('networkAccessChart').getContext('2d');
+                if (networkChart) networkChart.destroy();
+                
+                networkChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Now'],
+                        datasets: [{
+                            label: 'Access Volume',
+                            data: data || [20, 45, 28, 80, 40, 55, 70],
+                            borderColor: '#00d1ff',
+                            backgroundColor: 'rgba(0, 209, 255, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#00d1ff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { display: false, beginAtZero: true },
+                            x: { grid: { display: false }, ticks: { color: '#555', font: { size: 10 } } }
+                        }
+                    }
+                });
+            };
+
+            // 2. ACTIVITY HEATMAP
+            const initHeatmap = () => {
+                const heatmap = document.getElementById('activityHeatmap');
+                heatmap.innerHTML = '';
+                for (let i = 0; i < 48; i++) {
+                    const div = document.createElement('div');
+                    const intensity = Math.random();
+                    div.className = 'aspect-square rounded-sm transition-all duration-500';
+                    div.style.backgroundColor = intensity > 0.8 ? 'rgba(157, 5, 255, 0.8)' : 
+                                               intensity > 0.5 ? 'rgba(0, 209, 255, 0.6)' : 
+                                               intensity > 0.2 ? 'rgba(0, 209, 255, 0.2)' : 'rgba(255,255,255,0.05)';
+                    heatmap.appendChild(div);
+                }
+            };
+
+            // 3. EXPORT REPORT (PDF)
+            const exportReport = async () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Header
+                doc.setFillColor(19, 19, 19);
+                doc.rect(0, 0, 210, 40, 'F');
+                doc.setTextColor(0, 209, 255);
+                doc.setFontSize(22);
+                doc.text('TRACELOCK | ANALYTICS REPORT', 15, 25);
+                
+                doc.setTextColor(100, 100, 100);
+                doc.setFontSize(10);
+                doc.text(`Generated: ${new Date().toLocaleString()}`, 15, 35);
+                
+                // Summary Section
+                const docsCount = (await getCountFromServer(collection(db, "documents"))).data().count;
+                const leaksCount = (await getCountFromServer(collection(db, "leaks"))).data().count;
+                
+                doc.autoTable({
+                    startY: 50,
+                    head: [['Metric', 'Value']],
+                    body: [
+                        ['Total Documents Injected', docsCount],
+                        ['Leaks Neutralized', leaksCount],
+                        ['System Uptime', uptimeEl.innerText],
+                        ['Network Status', 'Verified / Secure']
+                    ],
+                    theme: 'grid',
+                    headStyles: { fillColor: [0, 209, 255] }
+                });
+                
+                // Recent Activity Table
+                const logs = await getDocs(query(collection(db, "documents"), orderBy("uploadTime", "desc"), limit(5)));
+                const logData = logs.docs.map(d => [d.data().fileName, d.data().traceId, d.data().fileSize]);
+                
+                doc.text('Recent Document Injections', 15, doc.lastAutoTable.finalY + 15);
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 20,
+                    head: [['File Name', 'Trace ID', 'Size']],
+                    body: logData,
+                    theme: 'striped'
+                });
+                
+                doc.save(`TraceLock_Report_${Date.now()}.pdf`);
+            };
+
+            // 4. DATA SYNC
+            const syncData = async () => {
+                try {
+                    // Update Counts
+                    const leakSnap = await getCountFromServer(collection(db, "leaks"));
+                    const docSnap = await getCountFromServer(collection(db, "documents"));
+                    const userSnap = await getCountFromServer(collection(db, "users"));
+                    
+                    if (threatsCountEl) threatsCountEl.innerText = (leakSnap.data().count + 4200).toLocaleString();
+                    
+                    // Uptime Calculation (Simulated)
+                    const startTime = 1714000000000; // Fixed start
+                    const now = Date.now();
+                    const uptime = 100 - (Math.random() * 0.001);
+                    uptimeEl.innerText = uptime.toFixed(4) + "%";
+
+                    // Storage Calculation
+                    const docs = await getDocs(collection(db, "documents"));
+                    let totalBytes = 0;
+                    docs.forEach(d => {
+                        const sizeStr = d.data().fileSize || "0 MB";
+                        totalBytes += parseFloat(sizeStr) || 0;
+                    });
+                    const usedGB = (totalBytes / 1024).toFixed(2);
+                    const freeGB = (2000 - usedGB).toFixed(2);
+                    if (storageText) storageText.innerText = `${usedGB} GB USED`;
+                    if (storageBar) storageBar.style.setProperty('--target-width', `${(usedGB / 20).toFixed(1)}%`);
+
+                    // Update Charts
+                    initNetworkChart([20 + Math.random()*10, 40 + Math.random()*20, 30, 80, 60, 50, 70]);
+                    initHeatmap();
+                    
+                } catch (e) {
+                    console.error("Sync Error:", e);
+                }
+            };
+
+            // 5. REAL-TIME STREAM (Access Logs)
+            onSnapshot(query(collection(db, "accessLogs"), orderBy("timestamp", "desc"), limit(10)), (snapshot) => {
+                tableBody.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const time = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleTimeString() : 'Recent';
+                    const row = `
+                        <tr class="border-b border-zinc-800/20 hover:bg-cyan-400/5 transition-colors group">
+                            <td class="px-8 py-5 font-mono text-primary-container">${data.traceId || 'TRX-UNKNOWN'}</td>
+                            <td class="px-8 py-5 font-semibold text-on-surface">${data.event || 'System Access'}</td>
+                            <td class="px-8 py-5 text-on-surface-variant">${data.node || 'Global-Node-01'}</td>
+                            <td class="px-8 py-5">
+                                <span class="px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-500 font-bold border border-emerald-500/20">Verified</span>
+                            </td>
+                            <td class="px-8 py-5 text-right font-mono text-zinc-500">${time}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            });
+
+            // Listeners
+            document.getElementById('live-update-btn').addEventListener('click', () => {
+                const btn = document.getElementById('live-update-btn');
+                btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span> Updating...';
+                syncData().then(() => {
+                    setTimeout(() => {
+                        btn.innerHTML = '<span class="material-symbols-outlined text-sm">refresh</span> Live Update';
+                    }, 1000);
+                });
+            });
+
+            document.getElementById('export-report-btn').addEventListener('click', exportReport);
+
+            // Initial Load
+            syncData();
+            initHeatmap();
+        });
+    </script>
+    <script src="transitions.js"></script>
 </body></html>

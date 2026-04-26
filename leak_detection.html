@@ -117,6 +117,9 @@
             50% { border-color: rgba(0, 209, 255, 0.4); }
         }
     </style>
+    <!-- Forensic Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body class="bg-surface-container-lowest font-body text-on-surface antialiased overflow-x-hidden">
 <!-- SideNavBar consistent with other pages -->
@@ -174,7 +177,7 @@
 <span class="material-symbols-outlined cursor-pointer hover:text-cyan-300 transition-colors opacity-80 hover:opacity-100">notifications</span>
 <span class="material-symbols-outlined cursor-pointer hover:text-cyan-300 transition-colors opacity-80 hover:opacity-100">shield</span>
 </div>
-<img alt="Administrator" class="w-8 h-8 rounded-full border border-cyan-500/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsrm_BNf3LtqPhEq44iQz5eNEN4lm-wT_gz1bGRvKMlA8uaIbvfnXWp9p3yKW1Wqz--TXzn6s5QGqZPG2OFo74HxFpMgvuIbJrC2vFSkrkZ58NttYzKvb8STFNLYUyz9Qf8yDbUpkq9YcjmSsJUFSIbtJgLCCrtNRANS7Dr-rt5Kb_tgVycNN9EmbSAoCzBDMkdASziq8wGVttHsEB_SXlwmdaQiItXxyztHNULQfd_ulOcOCJ-bbesPgLPgunVg4u53IFvLZAhhle"/>
+<img alt="Administrator" class="w-8 h-8 rounded-full border border-cyan-500/20 object-cover user-profile-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsrm_BNf3LtqPhEq44iQz5eNEN4lm-wT_gz1bGRvKMlA8uaIbvfnXWp9p3yKW1Wqz--TXzn6s5QGqZPG2OFo74HxFpMgvuIbJrC2vFSkrkZ58NttYzKvb8STFNLYUyz9Qf8yDbUpkq9YcjmSsJUFSIbtJgLCCrtNRANS7Dr-rt5Kb_tgVycNN9EmbSAoCzBDMkdASziq8wGVttHsEB_SXlwmdaQiItXxyztHNULQfd_ulOcOCJ-bbesPgLPgunVg4u53IFvLZAhhle"/>
 </div>
 </header>
 <!-- Hero Section & Dashboard Content -->
@@ -189,7 +192,7 @@
 <div class="p-5 rounded-2xl glass-panel flex items-center gap-4 border-cyan-500/10 neon-glow">
 <div class="text-right">
 <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Integrity Score</p>
-<p class="text-3xl font-black text-primary-container leading-none">99.2%</p>
+<p id="integrity-score" class="text-3xl font-black text-primary-container leading-none">99.2%</p>
 </div>
 <span class="material-symbols-outlined text-primary-container text-4xl">verified_user</span>
 </div>
@@ -212,9 +215,10 @@
 <span class="material-symbols-outlined text-5xl text-primary-container">file_upload</span>
 </div>
 </div>
-<h3 class="font-headline text-2xl font-bold mb-3 tracking-tight">Ingest Forensic Payload</h3>
+<h3 class="font-headline text-2xl font-bold mb-3 tracking-tight" id="extraction-status">Ingest Forensic Payload</h3>
 <p class="text-sm text-on-surface-variant mb-10 max-w-sm leading-relaxed">System accepts .log, .trace, and encrypted packet captures. Maximum forensic image size is 2GB.</p>
-<button class="px-10 py-4 rounded-full bg-zinc-900 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest hover:bg-cyan-400 hover:text-zinc-950 transition-all duration-300 shadow-xl">
+<input type="file" id="forensic-input" class="hidden" accept=".log,.trace,.json,.txt,.pdf,.enc" />
+<button id="select-source-btn" class="px-10 py-4 rounded-full bg-zinc-900 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest hover:bg-cyan-400 hover:text-zinc-950 transition-all duration-300 shadow-xl">
                             Select Secure Source
                         </button>
 </div>
@@ -251,7 +255,7 @@
 <span class="material-symbols-outlined text-zinc-600 group-hover:text-cyan-400 transition-colors">location_on</span>
 <span class="text-sm font-medium text-zinc-400">Extraction Node</span>
 </div>
-<span class="text-sm text-on-surface">Frankfurt-DE #09</span>
+<span id="extraction-node" class="text-sm text-on-surface">System Standby</span>
 </div>
 <div class="flex justify-between items-center p-5 rounded-2xl bg-zinc-950/40 border border-white/5 group hover:border-cyan-500/20 transition-all">
 <div class="flex items-center gap-4">
@@ -261,7 +265,7 @@
 <span class="text-lg text-primary-container font-black">98.4%</span>
 </div>
 </div>
-<button class="w-full mt-10 py-4 rounded-full bg-error-container/10 border border-error/30 text-error text-[10px] font-black uppercase tracking-widest hover:bg-error hover:text-white transition-all duration-300">
+<button id="revoke-access-btn" class="w-full mt-10 py-4 rounded-full bg-error-container/10 border border-error/30 text-error text-[10px] font-black uppercase tracking-widest hover:bg-error hover:text-white transition-all duration-300 opacity-50" disabled>
                             Initiate Protocol: Revoke Access
                         </button>
 </div>
@@ -273,7 +277,7 @@
 <h4 class="text-2xl font-bold tracking-tight">Global Access Forensics</h4>
 <p class="text-sm text-zinc-500 mt-1">Real-time cross-referenced activity across secured infrastructure</p>
 </div>
-<button class="flex items-center gap-2 px-5 py-2 rounded-full border border-primary-container/20 text-[10px] font-black uppercase tracking-widest text-primary-container hover:bg-primary-container/10 transition-all">
+<button id="export-manifest-btn" class="flex items-center gap-2 px-5 py-2 rounded-full border border-primary-container/20 text-[10px] font-black uppercase tracking-widest text-primary-container hover:bg-primary-container/10 transition-all">
                             Export Manifest <span class="material-symbols-outlined text-sm">download</span>
 </button>
 </div>
@@ -333,5 +337,192 @@
 <span class="text-[10px] font-black uppercase tracking-widest text-on-surface">System Integrity: Nominal</span>
 </button>
 </div>
-<script src="transitions.js"></script>
+    <script type="module">
+        import { db, auth, logActivity, collection, query, orderBy, limit, onSnapshot, onAuthStateChanged, getDocs, where, doc, updateDoc, addDoc, serverTimestamp } from './firebase-config.js';
+
+        // --- AUTH GUARD ---
+        onAuthStateChanged(auth, (user) => {
+            if (!user) window.location.href = 'login.html';
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const leakGridBody = document.querySelector('tbody');
+            const suspectCard = document.querySelector('.lg\\:col-span-5');
+            const suspectName = suspectCard.querySelector('h5');
+            const suspectEmail = suspectCard.querySelector('p.italic');
+            const suspectImg = suspectCard.querySelector('img');
+            const suspectConfidence = suspectCard.querySelector('.text-primary-container.font-black');
+            const extractionNode = document.getElementById('extraction-node');
+            const integrityScoreEl = document.getElementById('integrity-score');
+            const revokeBtn = document.getElementById('revoke-access-btn');
+            const extractionStatus = document.getElementById('extraction-status');
+            
+            let matchedDocument = null;
+
+            // --- 1. FORENSIC UPLOAD & MATCHING ---
+            const forensicInput = document.getElementById('forensic-input');
+            const selectSourceBtn = document.getElementById('select-source-btn');
+
+            selectSourceBtn.addEventListener('click', () => forensicInput.click());
+
+            forensicInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                extractionStatus.innerText = "EXTRACTING SIGNATURES...";
+                const reader = new FileReader();
+                
+                reader.onload = async (event) => {
+                    const content = event.target.result;
+                    // Regex for Trace IDs: TL-, TRX-, SYS-, ARK-
+                    const idPattern = /(TL-|TRX-|SYS-|ARK-)[A-Z0-9-]+/g;
+                    const matches = content.match(idPattern);
+
+                    if (matches && matches.length > 0) {
+                        const targetId = matches[0];
+                        await findLeakSource(targetId);
+                    } else {
+                        extractionStatus.innerText = "NO TRACE ID FOUND";
+                        alert("No valid TraceLock signatures found in this payload.");
+                        resetSuspectCard();
+                    }
+                };
+                reader.readAsText(file);
+            });
+
+            const findLeakSource = async (traceId) => {
+                extractionStatus.innerText = `MATCHING ID: ${traceId}`;
+                const q = query(collection(db, "documents"), where("traceId", "==", traceId));
+                const snap = await getDocs(q);
+
+                if (!snap.empty) {
+                    matchedDocument = { id: snap.docs[0].id, ...snap.docs[0].data() };
+                    updateSuspectCard(matchedDocument);
+                    extractionStatus.innerText = "LEAK SOURCE CONFIRMED";
+                } else {
+                    extractionStatus.innerText = "ID NOT FOUND IN VAULT";
+                    resetSuspectCard();
+                }
+            };
+
+            const updateSuspectCard = (data) => {
+                suspectName.innerText = data.uploaderName || "Authorized User";
+                suspectEmail.innerText = data.uploaderEmail || "identity-compromised@tracelock.io";
+                suspectConfidence.innerText = "98.4%";
+                integrityScoreEl.innerText = "1.6%";
+                extractionNode.innerText = "Frankfurt-DE #09";
+                revokeBtn.disabled = false;
+                revokeBtn.classList.remove('opacity-50');
+            };
+
+            const resetSuspectCard = () => {
+                suspectName.innerText = "Marcus Vane";
+                suspectEmail.innerText = "mvane.external@enterprise.com";
+                suspectConfidence.innerText = "0.0%";
+                integrityScoreEl.innerText = "99.2%";
+                extractionNode.innerText = "System Standby";
+                revokeBtn.disabled = true;
+                revokeBtn.classList.add('opacity-50');
+                matchedDocument = null;
+            };
+
+            // --- 2. REVOKE ACCESS PROTOCOL ---
+            revokeBtn.addEventListener('click', async () => {
+                if (!matchedDocument) return;
+
+                revokeBtn.innerText = "INITIATING REVOCATION...";
+                try {
+                    const docRef = doc(db, "documents", matchedDocument.id);
+                    await updateDoc(docRef, {
+                        status: "revoked",
+                        downloadBlocked: true,
+                        revokedAt: serverTimestamp()
+                    });
+
+                    await logActivity("Access Revoked", `Source: ${matchedDocument.fileName} | Trace ID: ${matchedDocument.traceId}`, "security");
+                    await addDoc(collection(db, "threatLogs"), {
+                        type: "Leak Neutralization",
+                        documentId: matchedDocument.id,
+                        traceId: matchedDocument.traceId,
+                        timestamp: serverTimestamp(),
+                        action: "Access Revoked"
+                    });
+
+                    alert(`PROTOCOL COMPLETE: Access to ${matchedDocument.fileName} has been globally revoked.`);
+                    revokeBtn.innerText = "ACCESS REVOKED";
+                    revokeBtn.disabled = true;
+                } catch (e) {
+                    console.error(e);
+                    revokeBtn.innerText = "REVOCATION FAILED";
+                }
+            });
+
+            // --- 3. EXPORT MANIFEST (PDF) ---
+            document.getElementById('export-manifest-btn').addEventListener('click', async () => {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+                
+                pdf.setFillColor(13, 13, 13);
+                pdf.rect(0, 0, 210, 40, 'F');
+                pdf.setTextColor(0, 209, 255);
+                pdf.setFontSize(20);
+                pdf.text('TRACELOCK FORENSIC MANIFEST', 15, 25);
+                
+                pdf.setFontSize(10);
+                pdf.setTextColor(150);
+                pdf.text(`Forensic ID: ${Date.now()}`, 15, 35);
+
+                const tableData = [];
+                const qLogs = await getDocs(query(collection(db, "leaks"), orderBy("detectedTime", "desc"), limit(10)));
+                qLogs.forEach(l => {
+                    const d = l.data();
+                    tableData.push([
+                        new Date(d.detectedTime?.toDate()).toLocaleString(),
+                        d.documentName,
+                        d.traceId,
+                        d.leakProbability
+                    ]);
+                });
+
+                pdf.autoTable({
+                    startY: 50,
+                    head: [['Timestamp', 'Asset', 'Trace ID', 'Confidence']],
+                    body: tableData,
+                    theme: 'grid',
+                    headStyles: { fillColor: [0, 209, 255] }
+                });
+
+                pdf.save(`TraceLock_Forensic_Manifest_${Date.now()}.pdf`);
+            });
+
+            // --- 4. GLOBAL ACCESS FORENSICS (from accessLogs) ---
+            const qAccess = query(collection(db, "accessLogs"), orderBy("timestamp", "desc"), limit(10));
+            onSnapshot(qAccess, (snapshot) => {
+                leakGridBody.innerHTML = '';
+                if (snapshot.empty) {
+                    leakGridBody.innerHTML = `<tr><td colspan="5" class="py-10 text-center text-zinc-600">No forensic access logs detected.</td></tr>`;
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const timeStr = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleTimeString() : 'Recent';
+                    
+                    const row = `
+                        <tr class="border-b border-zinc-800/20 hover:bg-white/[0.02] transition-colors group">
+                            <td class="py-6 pl-4 font-mono text-zinc-500">${timeStr}</td>
+                            <td class="py-6 font-bold tracking-tight">${data.event || 'Node Access'}</td>
+                            <td class="py-6 text-zinc-400">${data.traceId || 'N/A'}</td>
+                            <td class="py-6 font-mono text-zinc-500">${data.node || '127.0.0.1'}</td>
+                            <td class="py-6 text-right pr-4">
+                                <span class="px-3 py-1 rounded-full bg-cyan-400/10 text-cyan-400 text-[9px] font-black uppercase border border-cyan-400/20">SECURED</span>
+                            </td>
+                        </tr>
+                    `;
+                    leakGridBody.innerHTML += row;
+                });
+            });
+        });
+    </script>
+    <script src="transitions.js"></script>
 </body></html>

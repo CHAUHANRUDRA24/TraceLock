@@ -237,20 +237,7 @@
     </footer>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-        
-        const firebaseConfig = {
-          apiKey: "AIzaSyBU-qmN4EP_SrueaYPRu_Z8q9VXnlqlbBI",
-          authDomain: "tracelock-2b9e3.firebaseapp.com",
-          projectId: "tracelock-2b9e3",
-          storageBucket: "tracelock-2b9e3.firebasestorage.app",
-          messagingSenderId: "893812064883",
-          appId: "1:893812064883:web:2c6b1a72ac718a4947e006"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        import { auth, db, logActivity, GoogleAuthProvider, signInWithPopup, setDoc, doc, serverTimestamp } from './firebase-config.js';
         const provider = new GoogleAuthProvider();
 
         // DOM Elements
@@ -262,12 +249,38 @@
 
         // Google Login Logic
         googleBtn.addEventListener('click', async () => {
+            const span = googleBtn.querySelector('span');
+            const originalText = span.innerText;
+            span.innerText = 'Connecting...';
+            googleBtn.disabled = true;
+
             try {
                 const result = await signInWithPopup(auth, provider);
-                console.log("Authenticated:", result.user.displayName);
-                triggerTransition('dashboard.html');
+                const user = result.user;
+                
+                // Register/Sync user in Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    displayName: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL,
+                    lastLogin: serverTimestamp()
+                }, { merge: true });
+
+                localStorage.setItem('tracelock_user_photo', user.photoURL);
+                localStorage.setItem('tracelock_user_name', user.displayName);
+                
+                await logActivity("User Login Detected", `${user.displayName} authenticated via Google`, "auth");
+
+                span.innerText = 'Link Secured';
+                googleBtn.classList.replace('bg-surface-container-low', 'bg-emerald-500');
+                
+                setTimeout(() => {
+                    triggerTransition('dashboard.html');
+                }, 800);
             } catch (error) {
                 console.error("Auth error:", error.code);
+                span.innerText = originalText;
+                googleBtn.disabled = false;
             }
         });
 

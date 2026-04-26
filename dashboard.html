@@ -134,6 +134,14 @@
         .stagger-3 { animation-delay: 0.3s; }
         .stagger-4 { animation-delay: 0.4s; }
         .stagger-5 { animation-delay: 0.5s; }
+        @keyframes electricPulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 209, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 209, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 209, 255, 0); }
+        }
+        .pulse-active {
+            animation: electricPulse 1s ease-out infinite;
+        }
     </style>
 </head>
 <body class="bg-surface-container-lowest text-on-surface font-body selection:bg-primary-container selection:text-on-primary-fixed">
@@ -178,7 +186,7 @@
 <div class="flex items-center gap-8">
 <div class="relative">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">search</span>
-<input class="bg-surface-container-low border-none rounded-full pl-10 pr-6 py-1.5 text-xs w-64 focus:ring-1 focus:ring-cyan-500/50 placeholder:text-zinc-600 outline-none transition-all" placeholder="Scan network logs..." type="text"/>
+<input id="dashboard-search" class="bg-surface-container-low border-none rounded-full pl-10 pr-6 py-1.5 text-xs w-64 focus:ring-1 focus:ring-cyan-500/50 placeholder:text-zinc-600 outline-none transition-all" placeholder="Scan network logs..." type="text"/>
 </div>
 <nav class="flex gap-6">
 <a class="text-zinc-400 font-manrope text-xs font-medium uppercase tracking-widest opacity-80 hover:opacity-100 hover:text-cyan-300 transition-colors" href="#">Network</a>
@@ -192,8 +200,9 @@
 <span class="text-[9px] font-bold text-cyan-400 uppercase tracking-tight">Active</span>
 </div>
 <div class="flex gap-4">
-<span class="material-symbols-outlined text-zinc-400 hover:text-cyan-400 cursor-pointer text-xl transition-colors">notifications</span>
-<span class="material-symbols-outlined text-zinc-400 hover:text-cyan-400 cursor-pointer text-xl transition-colors">account_circle</span>
+                <span id="energy-pulse-btn" class="material-symbols-outlined text-zinc-400 hover:text-cyan-400 cursor-pointer text-xl transition-all hover:scale-125 active:rotate-45" title="Initiate System Pulse">bolt</span>
+                <span class="material-symbols-outlined text-zinc-400 hover:text-cyan-400 cursor-pointer text-xl transition-colors">notifications</span>
+                <span class="material-symbols-outlined text-zinc-400 hover:text-cyan-400 cursor-pointer text-xl transition-colors user-profile-icon">account_circle</span>
 </div>
 </div>
 </header>
@@ -202,11 +211,16 @@
 <section class="flex justify-between items-end reveal-item stagger-1">
 <div class="">
 <h2 class="font-headline text-4xl font-extrabold tracking-tight text-on-surface mb-2">Security Overview</h2>
-<p class="text-on-surface-variant max-w-lg">Monitoring 14.2TB of encrypted data across 4 nodes. No critical vulnerabilities detected in the last 24 hours.</p>
+<p id="system-status-summary" class="text-on-surface-variant max-w-lg">Initializing forensic link... Analyzing vault integrity and node distribution.</p>
 </div>
-<button class="px-8 py-3 bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-fixed font-headline font-bold rounded-full text-sm shadow-[0_0_32px_rgba(0,209,255,0.15)] active:scale-95 transition-all hover:brightness-110">
-                New Security Audit
-            </button>
+            <div class="flex gap-4">
+                <button class="px-8 py-3 bg-surface-container-high border border-zinc-700 text-white font-headline font-bold rounded-full text-sm active:scale-95 transition-all hover:bg-zinc-800" onclick="window.location.href='documents.html'">
+                    Upload Document
+                </button>
+                <button class="px-8 py-3 bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-fixed font-headline font-bold rounded-full text-sm shadow-[0_0_32px_rgba(0,209,255,0.15)] active:scale-95 transition-all hover:brightness-110">
+                    New Security Audit
+                </button>
+            </div>
 </section>
 <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <div class="glass-card p-8 rounded-lg relative overflow-hidden group reveal-item stagger-2">
@@ -214,10 +228,10 @@
 <span class="material-symbols-outlined text-6xl text-primary group-hover:scale-110 transition-transform duration-500">description</span>
 </div>
 <p class="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 group-hover:text-primary transition-colors">Total Documents</p>
-<p class="font-headline text-5xl font-black text-on-surface">1.2M+</p>
+<p id="total-docs-count" class="font-headline text-5xl font-black text-on-surface">0</p>
 <div class="mt-4 flex items-center gap-2 text-primary-container text-xs font-semibold">
 <span class="material-symbols-outlined text-sm">trending_up</span>
-<span>+12.4% vs last month</span>
+<span>Verified across all nodes</span>
 </div>
 </div>
 <div class="glass-card p-8 rounded-lg relative overflow-hidden group reveal-item stagger-3">
@@ -225,7 +239,7 @@
 <span class="material-symbols-outlined text-6xl text-primary group-hover:scale-110 transition-transform duration-500">group</span>
 </div>
 <p class="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 group-hover:text-primary transition-colors">Active Users</p>
-<p class="font-headline text-5xl font-black text-on-surface">842</p>
+<p id="active-users-count" class="font-headline text-5xl font-black text-on-surface">0</p>
 <div class="mt-4 flex items-center gap-2 text-primary-container text-xs font-semibold">
 <span class="material-symbols-outlined text-sm">radio_button_checked</span>
 <span class="animate-pulse">Live Tracking Enabled</span>
@@ -236,10 +250,10 @@
 <span class="material-symbols-outlined text-6xl text-error group-hover:scale-110 transition-transform duration-500">gpp_maybe</span>
 </div>
 <p class="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2 group-hover:text-error transition-colors">Leaks Detected</p>
-<p class="font-headline text-5xl font-black text-on-surface">0</p>
+<p id="leaks-detected-count" class="font-headline text-5xl font-black text-on-surface">0</p>
 <div class="mt-4 flex items-center gap-2 text-tertiary-container text-xs font-semibold">
 <span class="material-symbols-outlined text-sm">verified</span>
-<span>All nodes secure</span>
+<span>No active breaches</span>
 </div>
 </div>
 </section>
@@ -247,7 +261,7 @@
 <div class="lg:col-span-3 space-y-6">
 <div class="flex justify-between items-center mb-2">
 <h3 class="font-headline text-xl font-bold">Recent Uploads</h3>
-<a class="text-xs font-bold text-primary-container uppercase tracking-widest hover:underline transition-all" href="#">View All</a>
+<a class="text-xs font-bold text-primary-container uppercase tracking-widest hover:underline transition-all" href="documents.html">View All</a>
 </div>
 <div class="glass-card rounded-lg overflow-hidden border-none shadow-none">
 <table class="w-full text-left">
@@ -259,7 +273,7 @@
 <th class="px-6 py-4 text-right">Action</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-zinc-800/30">
+<tbody id="recent-uploads-body" class="divide-y divide-zinc-800/30">
 <tr class="hover:bg-zinc-800/40 transition-colors cursor-pointer group">
 <td class="px-6 py-5">
 <div class="flex items-center gap-3">
@@ -271,7 +285,7 @@
 </div>
 </td>
 <td class="px-6 py-5">
-<span class="px-3 py-1 bg-primary-container/10 text-primary-container text-[10px] font-bold rounded-full border border-primary-container/20">Classified</span>
+<span class="px-3 py-1 bg-primary-container/10 text-primary-container text-[10px] font-bold rounded-full border border-primary-container/20 whitespace-nowrap inline-flex items-center">Classified</span>
 </td>
 <td class="px-6 py-5">
 <div class="flex items-center gap-2">
@@ -294,7 +308,7 @@
 </div>
 </td>
 <td class="px-6 py-5">
-<span class="px-3 py-1 bg-secondary-container/10 text-secondary text-[10px] font-bold rounded-full border border-secondary-container/20">Top Secret</span>
+<span class="px-3 py-1 bg-secondary-container/10 text-secondary text-[10px] font-bold rounded-full border border-secondary-container/20 whitespace-nowrap inline-flex items-center">Top Secret</span>
 </td>
 <td class="px-6 py-5">
 <div class="flex items-center gap-2">
@@ -317,7 +331,7 @@
 </div>
 </td>
 <td class="px-6 py-5">
-<span class="px-3 py-1 bg-error-container/10 text-error text-[10px] font-bold rounded-full border border-error-container/20">Restricted</span>
+<span class="px-3 py-1 bg-error-container/10 text-error text-[10px] font-bold rounded-full border border-error-container/20 whitespace-nowrap inline-flex items-center">Restricted</span>
 </td>
 <td class="px-6 py-5">
 <div class="flex items-center gap-2">
@@ -387,6 +401,325 @@
 </section>
 </div>
 </main>
-<script src="transitions.js"></script>
-</body></html>
 
+<!-- Security Audit Modal -->
+<div id="audit-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-zinc-950/80 backdrop-blur-md hidden">
+    <div class="w-full max-w-2xl glass-card rounded-3xl p-10 relative neon-glow-primary overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-zinc-800">
+            <div id="audit-bar" class="h-full bg-primary-container transition-all duration-300 w-0"></div>
+        </div>
+        <div class="flex justify-between items-start mb-8">
+            <div>
+                <h3 class="text-2xl font-bold tracking-tight text-white">System Forensic Audit</h3>
+                <p id="audit-status" class="text-sm text-primary font-bold uppercase tracking-widest mt-1">Ready for initialization</p>
+            </div>
+            <button onclick="document.getElementById('audit-modal').classList.add('hidden')" class="p-2 rounded-full hover:bg-zinc-800 text-zinc-500 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <div class="bg-zinc-950/50 rounded-2xl p-6 border border-zinc-800/50 mb-8 h-64 overflow-y-auto font-mono text-[11px] leading-relaxed text-zinc-400" id="audit-log">
+            <div class="text-zinc-500 italic">> Initializing Firebase secure audit link...</div>
+        </div>
+
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="text-center">
+                    <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Coverage</p>
+                    <p id="audit-percentage" class="text-xl font-black text-white">0%</p>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button id="export-audit" class="px-6 py-2 rounded-full border border-zinc-800 text-xs font-bold uppercase tracking-widest text-zinc-500 opacity-50 cursor-not-allowed">Export PDF</button>
+                <button id="start-audit" class="px-8 py-3 bg-primary-container text-on-primary-fixed font-headline font-bold rounded-full text-sm shadow-[0_0_20px_rgba(0,209,255,0.3)]">Initiate Audit</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <script type="module">
+        import { db, auth, logActivity, collection, query, orderBy, limit, onSnapshot, getCountFromServer, getDocs, where, signOut } from './firebase-config.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const docsCountEl = document.querySelector('p.font-headline.text-5xl.text-on-surface');
+            const usersCountEl = document.querySelectorAll('p.font-headline.text-5xl.text-on-surface')[1];
+            const leaksCountEl = document.querySelectorAll('p.font-headline.text-5xl.text-on-surface')[2];
+            const uploadsBody = document.getElementById('recent-uploads-body');
+            const activityContainer = document.querySelector('.activity-item')?.parentElement;
+
+            // 1. Fetch Real Stats
+            const updateStats = async () => {
+                try {
+                    const docSnap = await getCountFromServer(collection(db, "documents"));
+                    const userSnap = await getCountFromServer(collection(db, "users"));
+                    const leakSnap = await getCountFromServer(collection(db, "leaks"));
+
+                    const docsCount = docSnap.data().count;
+                    const usersCount = userSnap.data().count;
+                    const leaksCount = leakSnap.data().count;
+
+                    if (document.getElementById('total-docs-count')) {
+                        document.getElementById('total-docs-count').innerText = docsCount >= 1000 ? (docsCount / 1000).toFixed(1) + 'K+' : docsCount;
+                    }
+                    if (document.getElementById('active-users-count')) {
+                        document.getElementById('active-users-count').innerText = usersCount;
+                    }
+                    if (document.getElementById('leaks-detected-count')) {
+                        document.getElementById('leaks-detected-count').innerText = leaksCount;
+                    }
+
+                    // Calculate Total Storage
+                    const allDocs = await getDocs(collection(db, "documents"));
+                    let totalMB = 0;
+                    allDocs.forEach(d => {
+                        totalMB += parseFloat(d.data().fileSize) || 0;
+                    });
+                    const totalStorageStr = totalMB > 1024 ? (totalMB / 1024).toFixed(2) + " GB" : totalMB.toFixed(2) + " MB";
+                    
+                    const statusSummary = document.getElementById('system-status-summary');
+                    if (statusSummary) {
+                        statusSummary.innerText = `Monitoring ${totalStorageStr} of encrypted data across ${docsCount} assets. No critical vulnerabilities detected in the last 24 hours.`;
+                    }
+
+                } catch (e) {
+                    console.warn("Firebase Stats Error:", e);
+                }
+            };
+
+            // 2. Real-time Recent Uploads
+            const qUploads = query(collection(db, "documents"), orderBy("uploadTime", "desc"), limit(5));
+            try {
+                onSnapshot(qUploads, (snapshot) => {
+                    if (!uploadsBody) return;
+                    uploadsBody.innerHTML = '';
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const row = document.createElement('tr');
+                        row.className = 'hover:bg-zinc-800/40 transition-colors cursor-pointer group animate-fade-in-up';
+                        row.innerHTML = `
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary-container group-hover:scale-110 transition-transform">verified_user</span>
+                                    <div>
+                                        <p class="text-sm font-semibold group-hover:text-primary transition-colors">${data.fileName}</p>
+                                        <p class="text-[10px] text-zinc-500">${data.fileSize} • ${data.fileType}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <span class="px-3 py-1 bg-primary-container/10 text-primary-container text-[10px] font-bold rounded-full border border-primary-container/20 whitespace-nowrap inline-flex items-center uppercase">${data.securityLevel || 'Standard'}</span>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-[10px] font-bold text-cyan-400">${data.uploaderName ? data.uploaderName.split(' ').map(n => n[0]).join('') : 'AD'}</div>
+                                    <span class="text-xs">${data.uploaderName || 'System'}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 text-right">
+                                <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button class="material-symbols-outlined text-sm text-zinc-500 hover:text-cyan-400 view-doc-btn" data-id="${docSnap.id}" data-trace="${data.traceId}">visibility</button>
+                                    <button class="material-symbols-outlined text-sm text-zinc-500 hover:text-cyan-400 download-doc-btn" data-url="${data.fileUrl}">download</button>
+                                    <button class="material-symbols-outlined text-sm text-zinc-500 hover:text-error delete-doc-btn" data-id="${docSnap.id}" data-path="${data.storagePath}">delete</button>
+                                </div>
+                            </td>
+                        `;
+                        uploadsBody.appendChild(row);
+                    });
+                }, (err) => console.warn("Firestore Uploads Listener Error:", err));
+            } catch (e) { console.error(e); }
+
+            // 3. Real-time Activity Timeline
+            const qActivity = query(collection(db, "activityLogs"), orderBy("time", "desc"), limit(6));
+            try {
+                onSnapshot(qActivity, (snapshot) => {
+                    if (!activityContainer) return;
+                    activityContainer.innerHTML = '';
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const item = document.createElement('div');
+                        item.className = 'activity-item flex gap-6 group cursor-pointer reveal-item mb-10';
+                        const timeStr = data.time ? new Date(data.time.toDate()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now';
+                        item.innerHTML = `
+                            <div class="relative z-10 w-5 h-5 rounded-full bg-primary-container flex items-center justify-center shadow-[0_0_12px_rgba(0,209,255,0.4)] group-hover:scale-125 transition-transform duration-300">
+                                <span class="material-symbols-outlined text-[10px] text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-sm font-semibold group-hover:text-primary transition-colors">${data.title}</p>
+                                <p class="text-xs text-zinc-500">${data.description}</p>
+                                <span class="text-[10px] font-bold text-primary-container uppercase">${timeStr}</span>
+                            </div>
+                        `;
+                        activityContainer.appendChild(item);
+                    });
+                }, (err) => console.warn("Firestore Activity Listener Error:", err));
+            } catch (e) { console.error(e); }
+
+            // 4. New Security Audit Logic
+            const auditModal = document.getElementById('audit-modal');
+            const auditBtn = document.querySelector('button.from-primary-container');
+            const startAudit = document.getElementById('start-audit');
+            const auditLog = document.getElementById('audit-log');
+            const auditBar = document.getElementById('audit-bar');
+            const auditStatus = document.getElementById('audit-status');
+            const auditPercent = document.getElementById('audit-percentage');
+
+            if (auditBtn) {
+                auditBtn.addEventListener('click', () => {
+                    auditModal.classList.remove('hidden');
+                    auditLog.innerHTML = '<div class="text-zinc-500 italic">> Initializing Firebase secure audit link...</div>';
+                });
+            }
+
+            if (startAudit) {
+                startAudit.addEventListener('click', async () => {
+                    if (startAudit.innerText === "Audit Finished") {
+                        auditModal.classList.add('hidden');
+                        return;
+                    }
+                    startAudit.disabled = true;
+                    startAudit.innerText = "Audit in progress...";
+                    auditLog.innerHTML = "";
+                    
+                    const log = (msg) => {
+                        const line = document.createElement('div');
+                        line.className = 'animate-fade-in-up';
+                        line.innerText = `> ${msg}`;
+                        auditLog.appendChild(line);
+                        auditLog.scrollTop = auditLog.scrollHeight;
+                    };
+
+                    log("Connecting to Firestore 'documents' collection...");
+                    let totalDocs = 0;
+                    let querySnapshot;
+                    try {
+                        querySnapshot = await getDocs(collection(db, "documents"));
+                        totalDocs = querySnapshot.size;
+                        log(`Found ${totalDocs} documents to analyze.`);
+                    } catch (e) {
+                        log("ERROR: Could not connect to Firestore. Check API status.");
+                        console.error(e);
+                        startAudit.disabled = false;
+                        startAudit.innerText = "Retry Audit";
+                        return;
+                    }
+
+                    let lowSecurityCount = 0;
+                    let missingTraceId = 0;
+                    let duplicateNames = new Set();
+                    let names = [];
+
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        if (data.securityLevel === 'Standard' || !data.securityLevel) lowSecurityCount++;
+                        if (!data.traceId) missingTraceId++;
+                        if (names.includes(data.fileName)) duplicateNames.add(data.fileName);
+                        names.push(data.fileName);
+                    });
+
+                    // Simulation visual progress
+                    let p = 0;
+                    const iv = setInterval(() => {
+                        p += 5;
+                        auditBar.style.width = p + '%';
+                        auditPercent.innerText = p + '%';
+                        if (p === 100) {
+                            clearInterval(iv);
+                            log("Analysis complete.");
+                            log(`[RESULT] ${totalDocs} documents scanned.`);
+                            log(`[RESULT] ${missingTraceId} missing Trace ID.`);
+                            log(`[RESULT] ${duplicateNames.size} duplicate file names.`);
+                            log(`[RESULT] ${lowSecurityCount} files need high security level.`);
+                            
+                            auditStatus.innerText = "Audit Report Generated";
+                            auditStatus.classList.replace('text-primary', 'text-emerald-400');
+                            document.getElementById('export-audit')?.classList.remove('opacity-50', 'cursor-not-allowed');
+                            startAudit.innerText = "Audit Finished";
+                            startAudit.disabled = false;
+                            logActivity("Security Audit Completed", `${totalDocs} scanned, ${lowSecurityCount} low security found`, "security");
+                        }
+                    }, 50);
+                });
+            }
+
+            // Logout Logic
+            const logoutBtn = document.querySelector('a[href="#logout"]') || document.querySelector('.logout-trigger');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    signOut(auth).then(() => {
+                        window.location.href = 'login.html';
+                    });
+                });
+            }
+
+            // --- 2.1 Table Actions & Search ---
+            const searchInput = document.getElementById('dashboard-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const term = e.target.value.toLowerCase();
+                    const rows = uploadsBody.querySelectorAll('tr');
+                    rows.forEach(row => {
+                        const name = row.querySelector('p.text-sm').innerText.toLowerCase();
+                        row.style.display = name.includes(term) ? '' : 'none';
+                    });
+                });
+            }
+
+            uploadsBody.addEventListener('click', async (e) => {
+                const btn = e.target;
+                if (btn.classList.contains('view-doc-btn')) {
+                    const { logAccess } = await import('./firebase-config.js');
+                    await logAccess(btn.dataset.id, btn.dataset.trace, "Dashboard Direct View", "Node-01");
+                    alert(`Forensic access logged for ${btn.dataset.trace}`);
+                } else if (btn.classList.contains('download-doc-btn')) {
+                    window.open(btn.dataset.url, '_blank');
+                } else if (btn.classList.contains('delete-doc-btn')) {
+                    if (confirm("Permanently purge this document from the vault?")) {
+                        const { deleteDoc, doc, storage, ref, deleteObject } = await import('./firebase-config.js');
+                        await deleteDoc(doc(db, "documents", btn.dataset.id));
+                        await deleteObject(ref(storage, btn.dataset.path));
+                        await logActivity("Vault Purge", `Document ${btn.dataset.id} was deleted via dashboard`, "delete");
+                    }
+                }
+            });
+
+            // --- 4.1 Export Audit PDF ---
+            const exportBtn = document.getElementById('export-audit');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', () => {
+                    const auditContent = auditLog.innerText;
+                    const blob = new Blob([auditContent], { type: 'text/plain' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `TraceLock_Audit_${Date.now()}.txt`;
+                    a.click();
+                });
+            }
+
+            // --- 5. Energy Pulse Logic ---
+            const pulseBtn = document.getElementById('energy-pulse-btn');
+            if (pulseBtn) {
+                pulseBtn.addEventListener('click', () => {
+                    pulseBtn.classList.add('text-cyan-400', 'animate-spin-slow');
+                    
+                    // Add pulse effect to cards
+                    document.querySelectorAll('.glass-card').forEach(card => {
+                        card.classList.add('pulse-active');
+                    });
+
+                    updateStats();
+                    
+                    setTimeout(() => {
+                        pulseBtn.classList.remove('text-cyan-400', 'animate-spin-slow');
+                        document.querySelectorAll('.glass-card').forEach(card => {
+                            card.classList.remove('pulse-active');
+                        });
+                    }, 2000);
+                });
+            }
+
+            updateStats();
+        });
+    </script>
+    <script src="transitions.js"></script>
+</body></html>

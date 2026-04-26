@@ -13,17 +13,43 @@
         document.body.appendChild(overlay);
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // Initial reveal
-        setTimeout(() => {
-            overlay.classList.add('loaded');
-            revealContent();
-        }, 100);
-
-        initializeNavigation();
-        wireRipples();
-        wireToggles();
+    
+// --- GLOBAL AUTH & LOGOUT ---
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('a[href="#logout"]')) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
     });
+
+    /**
+     * Sync user profile data from localStorage
+     */
+    function syncUserProfile() {
+        const photoUrl = localStorage.getItem('tracelock_user_photo');
+        if (photoUrl) {
+            // Update existing images
+            document.querySelectorAll('.user-profile-img').forEach(img => {
+                img.src = photoUrl;
+                img.classList.remove('hidden');
+                // Hide sibling icon if present
+                const icon = img.parentElement.querySelector('.user-profile-icon');
+                if (icon) icon.classList.add('hidden');
+            });
+
+            // Swap icons for images if only icon exists
+            document.querySelectorAll('.user-profile-icon').forEach(icon => {
+                if (!icon.parentElement.querySelector('.user-profile-img')) {
+                    const img = document.createElement('img');
+                    img.src = photoUrl;
+                    img.className = 'w-8 h-8 rounded-full object-cover border border-cyan-500/30 user-profile-img';
+                    icon.parentElement.appendChild(img);
+                    icon.classList.add('hidden');
+                }
+            });
+        }
+    }
 
     /**
      * Reveal page content with a stagger effect
@@ -71,20 +97,35 @@
             }
 
             link.addEventListener('click', (e) => {
-                if (link.getAttribute('href') === '#') {
+                const href = link.getAttribute('href');
+                if (href === '#') {
                     e.preventDefault();
-                    // Smooth switch for header "tabs"
+                    // 1. Visual state update
                     const parent = link.parentElement;
-                    parent.querySelectorAll('a').forEach(a => a.classList.remove('tl-nav-active-header', 'text-cyan-400', 'border-b-2', 'border-cyan-400'));
+                    parent.querySelectorAll('a').forEach(a => {
+                        a.classList.remove('tl-nav-active-header', 'text-cyan-400', 'opacity-100');
+                        // Handle potential border-b indicators
+                        a.classList.remove('border-b-2', 'border-cyan-400');
+                    });
                     
-                    link.classList.add('tl-nav-active-header');
+                    link.classList.add('tl-nav-active-header', 'text-cyan-400', 'opacity-100');
                     
-                    // Simulate content refresh
+                    // 2. Universal "Refresh" Pulse
                     const main = document.querySelector('main');
                     if (main) {
-                        main.classList.remove('tl-refresh-pulse');
-                        void main.offsetWidth; // Trigger reflow
-                        main.classList.add('tl-refresh-pulse');
+                        main.style.transition = 'opacity 0.3s ease, filter 0.3s ease';
+                        main.style.opacity = '0.6';
+                        main.style.filter = 'blur(4px)';
+                        
+                        setTimeout(() => {
+                            main.style.opacity = '1';
+                            main.style.filter = 'none';
+                            
+                            // 3. Dispatch event for page-specific logic (e.g. updating charts)
+                            document.dispatchEvent(new CustomEvent('tl-tab-switched', { 
+                                detail: { tab: link.textContent.trim().toLowerCase() } 
+                            }));
+                        }, 400);
                     }
                 } else {
                     handleNavClick(e);
@@ -154,39 +195,86 @@
     }
 
     /**
+     * Universal Search Simulation
+     */
+    function wireSearch() {
+        const searchInputs = document.querySelectorAll('input[placeholder*="Search"], input[placeholder*="Scan"]');
+        searchInputs.forEach(input => {
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const val = input.value.trim();
+                    if (!val) return;
+
+                    input.value = 'Scanning encrypted nodes...';
+                    input.disabled = true;
+                    input.classList.add('opacity-50');
+
+                    setTimeout(() => {
+                        input.value = `No unauthorized leaks found for "${val}"`;
+                        input.classList.remove('opacity-50');
+                        setTimeout(() => {
+                            input.value = '';
+                            input.disabled = false;
+                        }, 2000);
+                    }, 1500);
+                }
+            });
+        });
+    }
+
+    /**
      * Unified logic for toggle UI components
      */
     function wireToggles() {
+        // Support both custom structures and standard ones
         document.querySelectorAll('button').forEach(btn => {
-            const track = btn.querySelector('div.rounded-full');
-            const thumb = btn.querySelector('div.absolute');
-            if (!track || !thumb) return;
+            const track = btn.querySelector('div.rounded-full') || btn;
+            const thumb = btn.querySelector('span.rounded-full') || btn.querySelector('div.absolute');
+            
+            if (!thumb || !btn.classList.contains('rounded-full')) return;
 
-            let isOn = track.classList.contains('bg-secondary-container') || 
-                       track.classList.contains('bg-cyan-500/40') ||
-                       track.style.background === 'rgb(0, 209, 255)';
+            let isOn = btn.classList.contains('bg-secondary-container') || 
+                       btn.classList.contains('bg-cyan-500/40') ||
+                       thumb.classList.contains('ml-auto');
 
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 isOn = !isOn;
                 
-                track.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                btn.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
                 thumb.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 
                 if (isOn) {
-                    track.style.background = '#00d1ff';
-                    track.style.opacity = '1';
+                    btn.style.background = '#00d1ff';
+                    btn.classList.remove('bg-surface-container-highest/50', 'bg-zinc-800');
                     thumb.style.transform = 'translateX(20px)';
-                    thumb.style.background = '#fff';
+                    if (thumb.classList.contains('ml-auto')) {
+                        thumb.classList.remove('ml-auto');
+                        thumb.style.transform = 'translateX(24px)';
+                    }
                 } else {
-                    track.style.background = 'rgba(255, 255, 255, 0.08)';
+                    btn.style.background = 'rgba(255, 255, 255, 0.08)';
                     thumb.style.transform = 'translateX(0)';
-                    thumb.style.background = '#999';
                 }
             });
         });
     }
+
+    // Initialize all components and reveal page
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeNavigation();
+        wireRipples();
+        wireToggles();
+        wireSearch();
+        syncUserProfile();
+
+        setTimeout(() => {
+            if (overlay) overlay.classList.add('loaded');
+            revealContent();
+        }, 100);
+    });
 
 })();
 
