@@ -166,7 +166,7 @@ TraceLock uses a custom dark-mode design system built on Tailwind CSS:
 ## 🔐 Security Considerations
 
 - All document fingerprints are generated client-side using steganographic algorithms
-- Firebase Authentication handles user session management
+- Firebase Authentication handles user session management..
 - Firestore security rules should be configured to restrict data access per user role
 - No sensitive forensic keys or document content should be stored unencrypted
 
