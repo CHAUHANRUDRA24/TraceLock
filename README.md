@@ -40,7 +40,7 @@ Every document distributed through TraceLock receives an invisible, tamper-proof
 | 📊 **Analytics Dashboard** | Full audit trails, access frequency, risk scoring, and leak intelligence reports |
 | 🔐 **Leak Detection Engine** | Automated scanning and alerting when documents appear outside authorized channels |
 | 🗂️ **Document Vault** | Centralized secure document management with per-user access controls |
-| ⚙️ **User Settings** | Configurable notification preferences, security policies, and team management |
+| ⚙️ **User Settings** | Configurable notification preferences, security policies, and team management creato4 |
 
 ---
 
